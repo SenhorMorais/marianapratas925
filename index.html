@@ -4,8 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mariana Pratas 925 - Joias Exclusivas</title>
+    <meta name="description" content="Joias exclusivas em prata 925. Anéis, colares, brincos e pulseiras de alta qualidade com garantia. Compre direto pelo WhatsApp!">
+    <meta name="keywords" content="joias, prata 925, anéis, colares, brincos, pulseiras, mariana pratas">
+    <meta name="author" content="Mariana Pratas 925">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://marianapratas925.com/">
+    <meta property="og:title" content="Mariana Pratas 925 - Joias Exclusivas">
+    <meta property="og:description" content="Joias exclusivas em prata 925 com qualidade garantida">
+    <meta property="og:image" content="https://marianapratas925.com/preview.jpg">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://marianapratas925.com/">
+    <meta property="twitter:title" content="Mariana Pratas 925 - Joias Exclusivas">
+    <meta property="twitter:description" content="Joias exclusivas em prata 925 com qualidade garantida">
+    <meta property="twitter:image" content="https://marianapratas925.com/preview.jpg">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iOCIgZmlsbD0idXJsKCNncmFkaWVudDApIi8+CjxwYXRoIGQ9Ik04IDE2TDE2IDhMMjQgMTZMMTYgMjRMOCAxNloiIGZpbGw9IndoaXRlIi8+CjxkZWZzPgo8bGluZWFyR3JhZGllbnQgaWQ9ImdyYWRpZW50MCIgeDE9IjAiIHkxPSIwIiB4Mj0iMzIiIHkyPSIzMiIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPgo8c3RvcCBzdG9wLWNvbG9yPSIjOGI1Y2Y2Ii8+CjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI2VjNDg5OSIvPgo8L2xpbmVhckdyYWRpZW50Pgo8L2RlZnM+Cjwvc3ZnPgo=">
+
+    <!-- External Resources -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
     <style>
         * {
             margin: 0;
@@ -117,6 +140,11 @@
             to { opacity: 1; transform: translateX(0); }
         }
 
+        @keyframes heartBeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+        }
+
         .hidden { 
             display: none !important; 
         }
@@ -157,6 +185,21 @@
             color: var(--secondary);
         }
 
+        .admin-toggle.admin-active {
+            background: rgba(139, 92, 246, 0.2);
+            border-color: var(--primary);
+            animation: adminPulse 2s infinite;
+        }
+
+        .admin-toggle.admin-active i {
+            color: var(--primary);
+        }
+
+        @keyframes adminPulse {
+            0%, 100% { box-shadow: 0 10px 25px rgba(139, 92, 246, 0.3); }
+            50% { box-shadow: 0 15px 35px rgba(139, 92, 246, 0.5); }
+        }
+
         .alert {
             position: fixed;
             top: 80px;
@@ -185,7 +228,66 @@
             background: linear-gradient(135deg, var(--error), #dc2626);
         }
 
-        /* Header Styles */
+        .firebase-status {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px);
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            border: 2px solid rgba(139, 92, 246, 0.2);
+            font-size: 0.9rem;
+            font-weight: 600;
+            z-index: 100;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .firebase-status.connected {
+            color: var(--success);
+            border-color: rgba(16, 185, 129, 0.3);
+        }
+
+        .firebase-status.connecting {
+            color: var(--accent);
+            border-color: rgba(245, 158, 11, 0.3);
+        }
+
+        .firebase-status.error {
+            color: var(--error);
+            border-color: rgba(239, 68, 68, 0.3);
+        }
+
+        .favorites-counter {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(236, 72, 153, 0.2);
+            border-radius: 50px;
+            padding: 0.75rem 1.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            color: var(--secondary);
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .favorites-counter:hover {
+            transform: scale(1.05);
+            background: rgba(236, 72, 153, 0.1);
+            border-color: var(--secondary);
+            box-shadow: 0 15px 35px rgba(236, 72, 153, 0.2);
+        }
+
+        .favorites-counter i {
+            font-size: 1.2rem;
+            animation: heartBeat 1.5s infinite;
+        }
+
         .header {
             background: rgba(255, 255, 255, 0.8);
             backdrop-filter: blur(20px);
@@ -367,35 +469,87 @@
             color: white;
         }
 
+        .btn-success {
+            background: linear-gradient(135deg, var(--success), #059669);
+            color: white;
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-success:hover {
+            box-shadow: 0 20px 40px rgba(16, 185, 129, 0.4);
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, var(--accent), #d97706);
+            color: white;
+            box-shadow: 0 10px 25px rgba(245, 158, 11, 0.3);
+        }
+
+        .btn-warning:hover {
+            box-shadow: 0 20px 40px rgba(245, 158, 11, 0.4);
+        }
+
         .admin-actions {
             position: fixed;
             top: 80px;
             right: 20px;
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(255, 255, 255, 0.98);
             backdrop-filter: blur(20px);
             border-radius: 20px;
-            padding: 1rem;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
             display: flex;
             flex-direction: column;
-            gap: 0.75rem;
-            border: 1px solid rgba(139, 92, 246, 0.1);
+            gap: 1rem;
+            border: 2px solid rgba(139, 92, 246, 0.2);
             transform: translateX(120%);
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            min-width: 220px;
         }
 
         .admin-actions.show {
             transform: translateX(0);
         }
 
-        .admin-actions .btn {
-            padding: 0.75rem 1.5rem;
-            font-size: 0.9rem;
-            min-width: 120px;
-            justify-content: center;
+        .admin-actions::before {
+            content: '🔥 FIREBASE ADMIN';
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-align: center;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(139, 92, 246, 0.2);
+            margin-bottom: 0.5rem;
         }
 
-        /* Hero Section */
+        .admin-actions.unsaved-changes::before {
+            content: '⚠️ ALTERAÇÕES NÃO SALVAS';
+            background: linear-gradient(135deg, var(--accent), #d97706);
+            color: white;
+            padding: 0.5rem;
+            border-radius: 8px;
+            border-bottom: none;
+        }
+
+        .admin-actions .btn {
+            padding: 1rem 1.5rem;
+            font-size: 0.9rem;
+            min-width: 100%;
+            justify-content: center;
+            border-radius: 15px;
+            font-weight: 600;
+        }
+
+        .product-stats {
+            background: rgba(139, 92, 246, 0.1);
+            padding: 0.75rem 1rem;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
         .hero {
             padding: 8rem 0;
             text-align: center;
@@ -506,7 +660,6 @@
             border-color: var(--primary);
         }
 
-        /* Products Section */
         .products {
             padding: 8rem 0;
             position: relative;
@@ -681,19 +834,29 @@
             background: linear-gradient(135deg, var(--error), #dc2626);
         }
 
+        .duplicate-btn {
+            background: linear-gradient(135deg, var(--accent), #d97706);
+        }
+
         .heart-icon {
             position: absolute;
             bottom: 1.5rem;
             right: 1.5rem;
-            color: var(--secondary);
+            color: var(--gray);
             font-size: 1.8rem;
-            opacity: 0;
+            opacity: 0.7;
             transition: all 0.4s ease;
             cursor: pointer;
             padding: 0.5rem;
             background: rgba(255, 255, 255, 0.9);
             border-radius: 50%;
             backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .heart-icon.favorited {
+            color: var(--secondary);
+            animation: heartBeat 0.6s ease;
         }
 
         .product-card:hover .heart-icon {
@@ -702,8 +865,8 @@
         }
 
         .heart-icon:hover {
-            color: #dc2626;
             transform: scale(1.3) !important;
+            box-shadow: 0 8px 20px rgba(236, 72, 153, 0.3);
         }
 
         .product-info {
@@ -784,7 +947,6 @@
             box-shadow: 0 15px 35px rgba(139, 92, 246, 0.4);
         }
 
-        /* Modal Styles */
         .modal {
             position: fixed;
             top: 0;
@@ -806,8 +968,10 @@
             backdrop-filter: blur(20px);
             border-radius: 2.5rem;
             padding: 3rem;
-            max-width: 550px;
+            max-width: 600px;
             width: 100%;
+            max-height: 85vh;
+            overflow-y: auto;
             box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
             border: 2px solid rgba(255, 255, 255, 0.3);
             animation: fadeInUp 0.4s ease-out;
@@ -843,6 +1007,29 @@
             transition: all 0.3s ease;
             background: rgba(255, 255, 255, 0.8);
             backdrop-filter: blur(10px);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.1);
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        .form-input.error {
+            border-color: var(--error);
+            box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.1);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1rem;
         }
 
         .password-container {
@@ -955,21 +1142,20 @@
             background: rgba(139, 92, 246, 0.05);
         }
 
-        .form-input:focus {
+        .category-select {
+            background: rgba(255, 255, 255, 0.8);
+            border: 2px solid rgba(139, 92, 246, 0.2);
+            border-radius: 15px;
+            padding: 1.2rem 1.5rem;
+            font-size: 1rem;
+            color: var(--dark);
+            transition: all 0.3s ease;
+        }
+
+        .category-select:focus {
             outline: none;
             border-color: var(--primary);
             box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.1);
-            background: rgba(255, 255, 255, 0.95);
-        }
-
-        .form-input.error {
-            border-color: var(--error);
-            box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.1);
-        }
-
-        .form-textarea {
-            resize: vertical;
-            min-height: 100px;
         }
 
         .checkbox-group {
@@ -994,7 +1180,60 @@
             margin-top: 2.5rem;
         }
 
-        /* Footer */
+        .favorites-modal-content {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 2.5rem;
+            padding: 3rem;
+            max-width: 800px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .favorites-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .favorite-item {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 1.5rem;
+            padding: 1rem;
+            border: 2px solid rgba(139, 92, 246, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .favorite-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(139, 92, 246, 0.1);
+        }
+
+        .favorite-item img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .favorite-item h4 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+
+        .favorite-item .price {
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
         .footer {
             background: linear-gradient(135deg, var(--dark), #111827, #0f172a);
             color: white;
@@ -1052,7 +1291,6 @@
             margin-right: auto;
         }
 
-        /* Responsive */
         @media (max-width: 768px) {
             .hero-title {
                 font-size: 3rem;
@@ -1104,25 +1342,72 @@
             .admin-actions {
                 top: 70px;
                 right: 15px;
+                padding: 1rem;
+                min-width: 200px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .firebase-status {
+                left: 10px;
+                bottom: 10px;
+                font-size: 0.8rem;
+                padding: 0.5rem 1rem;
             }
         }
     </style>
 </head>
 <body>
     <!-- Admin Toggle Button -->
-    <button id="adminToggle" class="admin-toggle">
+    <button id="adminToggle" class="admin-toggle" aria-label="Painel administrativo">
         <i class="fas fa-cog"></i>
     </button>
 
+    <!-- Firebase Status -->
+    <div id="firebaseStatus" class="firebase-status connecting">
+        🔄 Conectando Firebase...
+    </div>
+
     <!-- Admin Actions Panel -->
     <div id="adminActions" class="admin-actions hidden">
+        <div class="product-stats" id="productStats">
+            📊 0 produtos cadastrados
+        </div>
         <button id="newProductBtn" class="btn btn-primary">
             <i class="fas fa-plus"></i>
-            Novo
+            Adicionar Produto
+        </button>
+        <button id="saveChangesBtn" class="btn btn-success">
+            <i class="fas fa-save"></i>
+            Salvar Alterações
+        </button>
+        <button id="syncFirebaseBtn" class="btn btn-secondary">
+            <i class="fas fa-sync"></i>
+            Sincronizar Firebase
+        </button>
+        <button id="changePasswordBtn" class="btn btn-warning">
+            <i class="fas fa-key"></i>
+            Alterar Senha
+        </button>
+        <button id="exportProductsBtn" class="btn btn-secondary">
+            <i class="fas fa-download"></i>
+            Backup Local
+        </button>
+
+        <button id="openImageManagerBtn" class="btn btn-secondary">
+            <i class="fas fa-images"></i>
+            Gerenciar Imagens
+        </button>
+
+        <button id="resetDataBtn" class="btn btn-danger">
+            <i class="fas fa-trash-restore"></i>
+            Reset Dados
         </button>
         <button id="logoutBtn" class="btn btn-danger">
             <i class="fas fa-sign-out-alt"></i>
-            Sair
+            Sair do Admin
         </button>
     </div>
 
@@ -1150,7 +1435,11 @@
             </div>
             
             <div class="header-actions">
-                <a href="https://wa.me/5511999999999" target="_blank" class="btn btn-whatsapp">
+                <div id="favoritesCounter" class="favorites-counter" onclick="showFavorites()">
+                    <i class="fas fa-heart"></i>
+                    <span id="favCount">0</span>
+                </div>
+                <a href="https://wa.me/5566999266079" target="_blank" class="btn btn-whatsapp" rel="noopener noreferrer">
                     <i class="fab fa-whatsapp"></i>
                     WhatsApp
                 </a>
@@ -1203,7 +1492,7 @@
             <p class="footer-subtitle">
                 Joias de qualidade com garantia e carinho especial. Sua beleza merece o melhor da prata 925.
             </p>
-            <a href="https://wa.me/5511999999999" target="_blank" class="btn btn-whatsapp" style="font-size: 1.3rem; padding: 1.5rem 3rem;">
+            <a href="https://wa.me/5566999266079" target="_blank" class="btn btn-whatsapp" style="font-size: 1.3rem; padding: 1.5rem 3rem;" rel="noopener noreferrer">
                 <i class="fab fa-whatsapp" style="font-size: 1.8rem;"></i>
                 Fale Conosco no WhatsApp
             </a>
@@ -1214,11 +1503,14 @@
     <div id="adminModal" class="modal hidden">
         <div class="modal-content">
             <h3 class="modal-title">🔐 Acesso Administrativo</h3>
+            <p style="text-align: center; color: var(--gray); margin-bottom: 1.5rem;">
+                Entre com a senha para acessar o painel Firebase
+            </p>
             <div class="form-group">
                 <label class="form-label">Senha</label>
                 <div class="password-container">
                     <input type="password" id="adminPassword" class="form-input" placeholder="Digite a senha de admin">
-                    <button type="button" class="password-toggle" onclick="togglePassword('adminPassword')">
+                    <button type="button" class="password-toggle" onclick="togglePassword('adminPassword')" aria-label="Mostrar/ocultar senha">
                         <i class="fas fa-eye"></i>
                     </button>
                 </div>
@@ -1239,15 +1531,31 @@
     <!-- Product Editor Modal -->
     <div id="productModal" class="modal hidden">
         <div class="modal-content">
-            <h3 id="productModalTitle" class="modal-title">✨ Novo Produto</h3>
-            <div class="form-group">
-                <label class="form-label">Nome da Joia</label>
-                <input type="text" id="productName" class="form-input" placeholder="Ex: Anel Solitário Delicado" required>
+            <h3 id="productModalTitle" class="modal-title">✨ Adicionar Novo Produto</h3>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Nome da Joia</label>
+                    <input type="text" id="productName" class="form-input" placeholder="Ex: Anel Solitário Delicado" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Categoria</label>
+                    <select id="productCategory" class="category-select">
+                        <option value="aneis">💍 Anéis</option>
+                        <option value="colares">📿 Colares</option>
+                        <option value="brincos">💫 Brincos</option>
+                        <option value="pulseiras">🔗 Pulseiras</option>
+                        <option value="conjuntos">✨ Conjuntos</option>
+                        <option value="outros">🎀 Outros</option>
+                    </select>
+                </div>
             </div>
+
             <div class="form-group">
                 <label class="form-label">Preço</label>
                 <input type="text" id="productPrice" class="form-input" placeholder="R$ 99,90" required>
             </div>
+
             <div class="form-group">
                 <label class="form-label">Imagem do Produto</label>
                 <div class="image-methods">
@@ -1268,23 +1576,26 @@
                     </div>
                     <div class="upload-text">Clique ou arraste uma imagem aqui</div>
                     <div class="upload-subtext">PNG, JPG, WEBP até 5MB</div>
-                    <img id="imagePreview" class="image-preview hidden" alt="Preview">
+                    <img id="imagePreview" class="image-preview hidden" alt="Preview da imagem">
                 </div>
                 
                 <div id="urlMethod" class="hidden">
                     <input type="url" id="productImageUrl" class="form-input" placeholder="https://exemplo.com/imagem.jpg">
                 </div>
             </div>
+
             <div class="form-group">
                 <label class="form-label">Descrição</label>
                 <textarea id="productDescription" class="form-input form-textarea" placeholder="Descreva as características especiais desta joia..." required></textarea>
             </div>
+
             <div class="form-group">
                 <div class="checkbox-group">
                     <input type="checkbox" id="productFeatured" class="checkbox">
                     <label class="form-label" style="margin: 0;">⭐ Produto em destaque</label>
                 </div>
             </div>
+
             <div class="modal-actions">
                 <button id="saveProductBtn" class="btn btn-primary" style="flex: 1;">
                     <i class="fas fa-save"></i>
@@ -1298,66 +1609,702 @@
         </div>
     </div>
 
+    <!-- Favorites Modal -->
+    <div id="favoritesModal" class="modal hidden">
+        <div class="favorites-modal-content">
+            <h3 class="modal-title">💖 Meus Favoritos</h3>
+            <div id="favoritesGrid" class="favorites-grid">
+                <!-- Favorites will be displayed here -->
+            </div>
+            <div class="modal-actions">
+                <button id="closeFavoritesBtn" class="btn btn-secondary" style="width: 100%;">
+                    <i class="fas fa-times"></i>
+                    Fechar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Change Password Modal -->
+    <div id="changePasswordModal" class="modal hidden">
+        <div class="modal-content">
+            <h3 class="modal-title">🔐 Alterar Senha Administrativa</h3>
+            <p style="text-align: center; color: var(--gray); margin-bottom: 1.5rem;">
+                Digite a senha atual e a nova senha
+            </p>
+            
+            <div class="form-group">
+                <label class="form-label">Senha Atual</label>
+                <div class="password-container">
+                    <input type="password" id="currentPassword" class="form-input" placeholder="Digite a senha atual">
+                    <button type="button" class="password-toggle" onclick="togglePassword('currentPassword')" aria-label="Mostrar/ocultar senha">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Nova Senha</label>
+                <div class="password-container">
+                    <input type="password" id="newPassword" class="form-input" placeholder="Digite a nova senha">
+                    <button type="button" class="password-toggle" onclick="togglePassword('newPassword')" aria-label="Mostrar/ocultar senha">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </div>
+                <small style="color: var(--gray); font-size: 0.85rem; margin-top: 0.5rem; display: block;">
+                    A senha deve ter pelo menos 8 caracteres
+                </small>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Confirmar Nova Senha</label>
+                <div class="password-container">
+                    <input type="password" id="confirmPassword" class="form-input" placeholder="Confirme a nova senha">
+                    <button type="button" class="password-toggle" onclick="togglePassword('confirmPassword')" aria-label="Mostrar/ocultar senha">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="modal-actions">
+                <button id="savePasswordBtn" class="btn btn-success" style="flex: 1;">
+                    <i class="fas fa-check"></i>
+                    Alterar Senha
+                </button>
+                <button id="cancelPasswordBtn" class="btn btn-secondary" style="flex: 1;">
+                    <i class="fas fa-times"></i>
+                    Cancelar
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // Global state
+        // =============================================
+        // 🔥 FIREBASE CONFIGURATION - SUAS CONFIGURAÇÕES REAIS
+        // =============================================
+        
+        const firebaseConfig = {
+            apiKey: "AIzaSyCO3PY6-PJGAVTrmeWRAZjXml2rv_83-YU",
+            authDomain: "mariana-pratas.firebaseapp.com",
+            databaseURL: "https://mariana-pratas-default-rtdb.firebaseio.com",
+            projectId: "mariana-pratas",
+            storageBucket: "mariana-pratas.firebasestorage.app",
+            messagingSenderId: "657284708089",
+            appId: "1:657284708089:web:d7260d92d5235c66771428"
+        };
+
+        // =============================================
+        // 🚀 MARIANA PRATAS 925 - SISTEMA COMPLETO
+        // =============================================
+
+        // Estado global da aplicação
         let isAdmin = false;
         let editingProduct = null;
         let currentImageMethod = 'upload';
         let uploadedImageData = null;
-        let products = [
-            {
-                id: 1,
-                name: 'Anel Solitário Prata 925',
-                price: 'R$ 89,90',
-                image: 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=400&h=400&fit=crop',
-                description: 'Elegante anel solitário em prata 925 com zircônia cravejada. Perfeito para ocasiões especiais.',
-                featured: true
-            },
-            {
-                id: 2,
-                name: 'Colar Coração Delicado',
-                price: 'R$ 65,90',
-                image: 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=400&h=400&fit=crop',
-                description: 'Colar feminino com pingente de coração em prata 925. Símbolo eterno do amor.',
-                featured: false
-            },
-            {
-                id: 3,
-                name: 'Brincos Argola Clássica',
-                price: 'R$ 45,90',
-                image: 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=400&h=400&fit=crop',
-                description: 'Par de brincos argola em prata 925, design atemporal que nunca sai de moda.',
-                featured: true
-            },
-            {
-                id: 4,
-                name: 'Pulseira Elos Dourados',
-                price: 'R$ 78,90',
-                image: 'https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=400&h=400&fit=crop',
-                description: 'Pulseira feminina com elos dourados, banho de ouro sobre prata 925.',
-                featured: false
-            },
-            {
-                id: 5,
-                name: 'Anel Flor Cristais',
-                price: 'R$ 92,90',
-                image: 'https://images.unsplash.com/photo-1603974372039-adc49044b6bd?w=400&h=400&fit=crop',
-                description: 'Anel com formato de flor e cristais cravejados. Delicadeza e sofisticação.',
-                featured: true
-            },
-            {
-                id: 6,
-                name: 'Colar Pedras Naturais',
-                price: 'R$ 115,90',
-                image: 'https://images.unsplash.com/photo-1506630448388-4e683c67ddb0?w=400&h=400&fit=crop',
-                description: 'Colar com pedras naturais e corrente em prata 925. Conexão com a natureza.',
-                featured: false
+        let favorites = [];
+        let products = [];
+        let firebaseConnected = false;
+        let app, db, storage, auth;
+        let hasUnsavedChanges = false;
+
+        const whatsappNumber = '5566999266079';
+        let adminPassword = 'Mariana6582!'; // Senha pode ser alterada
+
+        // =============================================
+        // 🔥 FIREBASE INITIALIZATION
+        // =============================================
+
+        async function initializeFirebase() {
+            try {
+                updateFirebaseStatus('🔄 Inicializando Firebase...', 'connecting');
+                
+                // Import Firebase modules dinamicamente
+                const { initializeApp } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js');
+                const { getFirestore } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js');
+                const { getStorage } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js');
+                const { getAuth } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js');
+
+                // Initialize Firebase
+                app = initializeApp(firebaseConfig);
+                db = getFirestore(app);
+                storage = getStorage(app);
+                auth = getAuth(app);
+
+                // Testar conexão
+                const { doc, getDoc } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js');
+                await getDoc(doc(db, 'test', 'connection'));
+
+                firebaseConnected = true;
+                updateFirebaseStatus('🔥 Firebase conectado!', 'connected');
+                
+                console.log('✅ Firebase inicializado com sucesso');
+                console.log('📊 Projeto:', firebaseConfig.projectId);
+                
+                // Exibir informações da conexão
+                showAlert('🔥 Firebase conectado com sucesso!');
+                
+                return true;
+            } catch (error) {
+                console.error('❌ Erro ao conectar Firebase:', error);
+                firebaseConnected = false;
+                
+                if (error.code === 'permission-denied') {
+                    updateFirebaseStatus('❌ Configure regras do Firestore', 'error');
+                    showAlert('❌ Acesso negado - Configure as regras do Firestore', 'error');
+                } else if (error.code === 'unavailable') {
+                    updateFirebaseStatus('📱 Firebase offline - usando local', 'error');
+                    showAlert('📱 Firebase offline - usando armazenamento local', 'error');
+                } else {
+                    updateFirebaseStatus('⚠️ Erro Firebase - usando localStorage', 'error');
+                    showAlert('⚠️ Erro na conexão Firebase - usando backup local', 'error');
+                }
+                return false;
             }
-        ];
+        }
 
-        const whatsappNumber = '5511999999999';
+        // =============================================
+        // 🔥 FIREBASE FIRESTORE FUNCTIONS
+        // =============================================
 
-        // Utility functions
+            
+
+    async function initializeFirebase() {
+        try {
+            updateFirebaseStatus('🔄 Inicializando Firebase...', 'connecting');
+            const { initializeApp } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js');
+            const { getFirestore, doc, getDoc } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js');
+            const { getStorage } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js');
+            const { getAuth } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js');
+
+            app = initializeApp(firebaseConfig);
+            db = getFirestore(app);
+            storage = getStorage(app);
+            auth = getAuth(app);
+
+            await getDoc(doc(db, 'test', 'connection'));
+            firebaseConnected = true;
+            updateFirebaseStatus('🔥 Firebase conectado!', 'connected');
+            showAlert('🔥 Firebase conectado com sucesso!');
+            return true;
+        } catch (error) {
+            console.error('❌ Erro ao conectar Firebase:', error);
+            firebaseConnected = false;
+            updateFirebaseStatus('⚠️ Erro Firebase - usando localStorage', 'error');
+            showAlert('⚠️ Erro na conexão Firebase - usando backup local', 'error');
+            return false;
+        }
+    }
+
+    async function saveProductToFirebase(product) {
+        if (!firebaseConnected) return saveProducts();
+
+        try {
+            const { doc, setDoc, collection } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js');
+            const productRef = doc(collection(db, 'products'), product.id.toString());
+            await setDoc(productRef, {
+                ...product,
+                updatedAt: new Date().toISOString(),
+                createdAt: product.createdAt || new Date().toISOString()
+            });
+            showAlert('🔥 Produto salvo no Firebase!');
+            return true;
+        } catch (error) {
+            console.error('❌ Erro ao salvar no Firebase:', error);
+            showAlert('⚠️ Erro ao salvar no Firebase, usando backup local', 'error');
+            return saveProducts();
+        }
+    }
+
+    async function loadProductsFromFirebase() {
+        if (!firebaseConnected) return loadFromLocalStorage('mariana_products', getDefaultProducts());
+
+        try {
+            const { collection, getDocs } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js');
+            const querySnapshot = await getDocs(collection(db, 'products'));
+            const firebaseProducts = [];
+
+            querySnapshot.forEach((doc) => {
+                firebaseProducts.push({ id: doc.id, ...doc.data() }); // corrigido aqui
+            });
+
+            if (firebaseProducts.length > 0) {
+                showAlert(`🔥 ${firebaseProducts.length} produtos carregados do Firebase!`);
+                return firebaseProducts;
+            } else {
+                return getDefaultProducts();
+            }
+        } catch (error) {
+            console.error('❌ Erro ao carregar do Firebase:', error);
+            showAlert('⚠️ Erro ao acessar Firebase, usando dados locais', 'error');
+            return loadFromLocalStorage('mariana_products', getDefaultProducts());
+        }
+    }
+
+        async function deleteProductFromFirebase(productId) {
+            if (!firebaseConnected) {
+                console.log('Firebase offline, removendo apenas localmente');
+                return true;
+            }
+
+            try {
+                const { doc, deleteDoc } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js');
+                
+                await deleteDoc(doc(db, 'products', productId.toString()));
+                console.log(`✅ Produto ${productId} removido do Firebase`);
+                showAlert('🗑️ Produto removido do Firebase!');
+                return true;
+            } catch (error) {
+                console.error('❌ Erro ao remover do Firebase:', error);
+                showAlert('⚠️ Erro ao remover do Firebase', 'error');
+                return false;
+            }
+        }
+
+        async function syncWithFirebase() {
+            if (!firebaseConnected) {
+                showAlert('❌ Firebase não conectado!', 'error');
+                return;
+            }
+
+            try {
+                updateFirebaseStatus('🔄 Sincronizando...', 'connecting');
+                
+                // Salvar todos os produtos atuais no Firebase
+                for (const product of products) {
+                    await saveProductToFirebase(product);
+                }
+
+                updateFirebaseStatus('🔥 Sincronizado!', 'connected');
+                showAlert(`🔄 ${products.length} produtos sincronizados com Firebase!`);
+                
+                // Limpar estado de alterações não salvas
+                clearUnsavedChanges();
+                updateProductStats();
+            } catch (error) {
+                console.error('❌ Erro na sincronização:', error);
+                updateFirebaseStatus('❌ Erro na sincronização', 'error');
+                showAlert('❌ Erro ao sincronizar com Firebase', 'error');
+            }
+        }
+
+        // =============================================
+        // 💾 SISTEMA DE ARMAZENAMENTO
+        // =============================================
+
+        function saveToLocalStorage(key, data) {
+            try {
+                const dataString = JSON.stringify(data);
+                localStorage.setItem(key, dataString);
+                console.log(`✅ Dados salvos no localStorage: ${key}`);
+                return true;
+            } catch (error) {
+                console.error('❌ Erro ao salvar dados:', error);
+                return false;
+            }
+        }
+
+        function loadFromLocalStorage(key, defaultValue = []) {
+            try {
+                const dataString = localStorage.getItem(key);
+                if (dataString) {
+                    const data = JSON.parse(dataString);
+                    console.log(`✅ Dados carregados do localStorage: ${key}`);
+                    return data;
+                }
+            } catch (error) {
+                console.error(`❌ Erro ao carregar ${key}:`, error);
+            }
+            return defaultValue;
+        }
+
+        // =============================================
+        // 📦 FUNÇÕES DE PRODUTOS
+        // =============================================
+
+        function getDefaultProducts() {
+            return [
+                {
+                    id: 1,
+                    name: 'Anel Solitário Prata 925',
+                    price: 'R$ 89,90',
+                    image: 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=400&h=400&fit=crop',
+                    description: 'Elegante anel solitário em prata 925 com zircônia cravejada. Perfeito para ocasiões especiais.',
+                    category: 'aneis',
+                    featured: true,
+                    createdAt: new Date().toISOString()
+                },
+                {
+                    id: 2,
+                    name: 'Colar Coração Delicado',
+                    price: 'R$ 65,90',
+                    image: 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=400&h=400&fit=crop',
+                    description: 'Colar feminino com pingente de coração em prata 925. Símbolo eterno do amor.',
+                    category: 'colares',
+                    featured: false,
+                    createdAt: new Date().toISOString()
+                },
+                {
+                    id: 3,
+                    name: 'Brincos Argola Clássica',
+                    price: 'R$ 45,90',
+                    image: 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=400&h=400&fit=crop',
+                    description: 'Par de brincos argola em prata 925, design atemporal que nunca sai de moda.',
+                    category: 'brincos',
+                    featured: true,
+                    createdAt: new Date().toISOString()
+                },
+                {
+                    id: 4,
+                    name: 'Pulseira Elos Dourados',
+                    price: 'R$ 78,90',
+                    image: 'https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=400&h=400&fit=crop',
+                    description: 'Pulseira feminina com elos dourados, banho de ouro sobre prata 925.',
+                    category: 'pulseiras',
+                    featured: false,
+                    createdAt: new Date().toISOString()
+                },
+                {
+                    id: 5,
+                    name: 'Anel Flor Cristais',
+                    price: 'R$ 92,90',
+                    image: 'https://images.unsplash.com/photo-1603974372039-adc49044b6bd?w=400&h=400&fit=crop',
+                    description: 'Anel com formato de flor e cristais cravejados. Delicadeza e sofisticação.',
+                    category: 'aneis',
+                    featured: true,
+                    createdAt: new Date().toISOString()
+                },
+                {
+                    id: 6,
+                    name: 'Colar Pedras Naturais',
+                    price: 'R$ 115,90',
+                    image: 'https://images.unsplash.com/photo-1506630448388-4e683c67ddb0?w=400&h=400&fit=crop',
+                    description: 'Colar com pedras naturais e corrente em prata 925. Conexão com a natureza.',
+                    category: 'colares',
+                    featured: false,
+                    createdAt: new Date().toISOString()
+                }
+            ];
+        }
+
+        async function loadProducts() {
+            if (firebaseConnected) {
+                products = await loadProductsFromFirebase();
+            } else {
+                products = loadFromLocalStorage('mariana_products', getDefaultProducts());
+            }
+            console.log(`📦 ${products.length} produtos carregados`);
+            return products;
+        }
+
+        async function saveProducts() {
+            // Sempre fazer backup local
+            const localSaved = saveToLocalStorage('mariana_products', products);
+            
+            // Se Firebase conectado e é admin, salvar também na nuvem
+            if (firebaseConnected && isAdmin) {
+                for (const product of products) {
+                    await saveProductToFirebase(product);
+                }
+            }
+            
+            return localSaved;
+        }
+
+        function loadFavorites() {
+            favorites = loadFromLocalStorage('mariana_favorites', []);
+            console.log(`❤️ ${favorites.length} favoritos carregados`);
+            return favorites;
+        }
+
+        function saveFavorites() {
+            return saveToLocalStorage('mariana_favorites', favorites);
+        }
+
+        // =============================================
+        // 📊 FUNÇÕES ADMINISTRATIVAS
+        // =============================================
+
+        function updateProductStats() {
+            const statsElement = document.getElementById('productStats');
+            const totalProducts = products.length;
+            const featuredProducts = products.filter(p => p.featured).length;
+            
+            // Indicador de conexão
+            let connectionStatus = '';
+            if (firebaseConnected) {
+                connectionStatus = '🔥 Firebase conectado';
+            } else {
+                connectionStatus = '💾 Armazenamento local';
+            }
+            
+            // Indicador de alterações não salvas
+            const changesIndicator = hasUnsavedChanges ? ' • ⚠️ Não salvo' : '';
+            
+            statsElement.innerHTML = `
+                📊 ${totalProducts} produtos • ${featuredProducts} em destaque<br>
+                <small style="opacity: 0.8;">${connectionStatus}${changesIndicator}</small>
+            `;
+        }
+
+        async function saveAllChanges() {
+            try {
+                console.log('💾 Salvando todas as alterações...');
+                
+                // Salvar produtos
+                await saveProducts();
+                
+                // Salvar favoritos
+                saveFavorites();
+                
+                // Se Firebase conectado, sincronizar
+                if (firebaseConnected && isAdmin) {
+                    for (const product of products) {
+                        await saveProductToFirebase(product);
+                    }
+                }
+                
+                clearUnsavedChanges();
+                showAlert('💾 Todas as alterações foram salvas!');
+                
+                console.log('✅ Alterações salvas com sucesso');
+            } catch (error) {
+                console.error('❌ Erro ao salvar alterações:', error);
+                showAlert('❌ Erro ao salvar algumas alterações', 'error');
+            }
+        }
+
+        function markUnsavedChanges() {
+            hasUnsavedChanges = true;
+            updateProductStats();
+            
+            // Adicionar indicador visual no painel admin
+            const adminActions = document.getElementById('adminActions');
+            if (adminActions) {
+                adminActions.classList.add('unsaved-changes');
+            }
+        }
+
+        function clearUnsavedChanges() {
+            hasUnsavedChanges = false;
+            updateProductStats();
+            
+            // Remover indicador visual no painel admin
+            const adminActions = document.getElementById('adminActions');
+            if (adminActions) {
+                adminActions.classList.remove('unsaved-changes');
+            }
+        }
+
+        function showChangePasswordModal() {
+            const modal = document.getElementById('changePasswordModal');
+            
+            // Limpar campos
+            document.getElementById('currentPassword').value = '';
+            document.getElementById('newPassword').value = '';
+            document.getElementById('confirmPassword').value = '';
+            
+            // Remover erros anteriores
+            document.querySelectorAll('#changePasswordModal .form-input').forEach(input => {
+                input.classList.remove('error');
+            });
+            
+            modal.classList.remove('hidden');
+        }
+
+        function validatePasswordChange() {
+            const currentPassword = document.getElementById('currentPassword').value;
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            // Limpar erros anteriores
+            document.querySelectorAll('#changePasswordModal .form-input').forEach(input => {
+                input.classList.remove('error');
+            });
+            
+            let isValid = true;
+            
+            // Verificar senha atual
+            if (currentPassword !== adminPassword) {
+                document.getElementById('currentPassword').classList.add('error');
+                showAlert('❌ Senha atual incorreta!', 'error');
+                isValid = false;
+            }
+            
+            // Verificar nova senha
+            if (newPassword.length < 8) {
+                document.getElementById('newPassword').classList.add('error');
+                showAlert('❌ A nova senha deve ter pelo menos 8 caracteres!', 'error');
+                isValid = false;
+            }
+            
+            // Verificar confirmação
+            if (newPassword !== confirmPassword) {
+                document.getElementById('confirmPassword').classList.add('error');
+                showAlert('❌ As senhas não coincidem!', 'error');
+                isValid = false;
+            }
+            
+            return isValid;
+        }
+
+        function handlePasswordChange() {
+            if (!validatePasswordChange()) {
+                return;
+            }
+            
+            const newPassword = document.getElementById('newPassword').value;
+            
+            // Alterar a senha
+            adminPassword = newPassword;
+            
+            // Salvar nova senha no localStorage (em produção, use um método mais seguro)
+            localStorage.setItem('mariana_admin_password', newPassword);
+            
+            // Fechar modal
+            document.getElementById('changePasswordModal').classList.add('hidden');
+            
+            // Marcar como alteração não salva
+            markUnsavedChanges();
+            
+            showAlert('🔐 Senha administrativa alterada com sucesso!');
+            console.log('🔐 Senha administrativa alterada');
+        }
+
+        function loadAdminPassword() {
+            const savedPassword = localStorage.getItem('mariana_admin_password');
+            if (savedPassword) {
+                adminPassword = savedPassword;
+                console.log('🔐 Senha administrativa carregada do localStorage');
+            }
+        }
+
+        function exportProducts() {
+            try {
+                const exportData = {
+                    products: products,
+                    favorites: favorites,
+                    exportDate: new Date().toISOString(),
+                    source: firebaseConnected ? 'firebase' : 'localStorage',
+                    version: '2.0'
+                };
+                
+                const dataStr = JSON.stringify(exportData, null, 2);
+                const dataBlob = new Blob([dataStr], {type: 'application/json'});
+                const url = URL.createObjectURL(dataBlob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = 'mariana-backup-' + new Date().toISOString().split('T')[0] + '.json';
+                link.click();
+                URL.revokeObjectURL(url);
+                showAlert('📥 Backup local criado!');
+            } catch (error) {
+                console.error('Erro ao exportar:', error);
+                showAlert('❌ Erro ao criar backup', 'error');
+            }
+        }
+
+        async function resetAllData() {
+            const confirmMessage = `🗑️ Tem certeza que deseja resetar TODOS os dados?\n\nIsso irá:\n• Remover todos os produtos\n• Limpar favoritos\n• Restaurar produtos padrão\n• ${firebaseConnected ? 'Limpar dados do Firebase' : 'Limpar dados locais'}\n\nEsta ação não pode ser desfeita!`;
+                
+            if (confirm(confirmMessage)) {
+                try {
+                    // Resetar variáveis locais
+                    products = getDefaultProducts();
+                    favorites = [];
+                    
+                    // Limpar storage local
+                    localStorage.removeItem('mariana_products');
+                    localStorage.removeItem('mariana_favorites');
+
+                    // Se Firebase conectado, limpar também
+                    if (firebaseConnected && isAdmin) {
+                        try {
+                            const { collection, getDocs, deleteDoc } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js');
+                            const querySnapshot = await getDocs(collection(db, 'products'));
+                            
+                            for (const doc of querySnapshot.docs) {
+                                await deleteDoc(doc.ref);
+                            }
+                            console.log('🔥 Dados do Firebase limpos');
+                        } catch (error) {
+                            console.error('❌ Erro ao limpar Firebase:', error);
+                        }
+                    }
+                    
+                    // Salvar estado inicial
+                    await saveProducts();
+                    saveFavorites();
+                    
+                    // Limpar estado de alterações não salvas
+                    clearUnsavedChanges();
+                    
+                    // Atualizar interface
+                    updateFavoritesCounter();
+                    updateProductStats();
+                    renderProducts();
+                    
+                    showAlert('🔄 Todos os dados foram resetados!');
+                } catch (error) {
+                    console.error('Erro ao resetar dados:', error);
+                    showAlert('❌ Erro ao resetar dados', 'error');
+                }
+            }
+        }
+
+        // =============================================
+        // 💖 FUNÇÕES DE FAVORITOS
+        // =============================================
+
+        function toggleFavorite(productId) {
+            const index = favorites.indexOf(productId);
+            if (index > -1) {
+                favorites.splice(index, 1);
+                showAlert('💔 Removido dos favoritos');
+            } else {
+                favorites.push(productId);
+                showAlert('💖 Adicionado aos favoritos!');
+            }
+            
+            saveFavorites();
+            updateFavoritesCounter();
+            renderProducts();
+        }
+
+        function updateFavoritesCounter() {
+            document.getElementById('favCount').textContent = favorites.length;
+        }
+
+        function showFavorites() {
+            const modal = document.getElementById('favoritesModal');
+            const grid = document.getElementById('favoritesGrid');
+            
+            if (favorites.length === 0) {
+                grid.innerHTML = '<div style="text-align: center; padding: 2rem; color: var(--gray);">💔 Nenhum favorito ainda. Adicione produtos clicando no coração!</div>';
+            } else {
+                const favoriteProducts = products.filter(p => favorites.includes(p.id));
+                grid.innerHTML = favoriteProducts.map(product => `
+                    <div class="favorite-item">
+                        <img src="${product.image}" alt="${product.name}" 
+                             onerror="this.src='https://via.placeholder.com/250x150/8b5cf6/ffffff?text=✨+Joia'">
+                        <h4>${product.name}</h4>
+                        <div class="price">${product.price}</div>
+                        <button class="btn btn-primary" onclick="handleWhatsApp(${product.id}); document.getElementById('favoritesModal').classList.add('hidden');" style="width: 100%; margin-top: 1rem;">
+                            <i class="fab fa-whatsapp"></i>
+                            Comprar
+                        </button>
+                    </div>
+                `).join('');
+            }
+            
+            modal.classList.remove('hidden');
+        }
+
+        // =============================================
+        // 🛠️ FUNÇÕES UTILITÁRIAS
+        // =============================================
+
         function showAlert(message, type = 'success') {
             const alert = document.createElement('div');
             alert.className = `alert ${type}`;
@@ -1388,6 +2335,17 @@
             }
         }
 
+        function updateFirebaseStatus(message, status = 'connected') {
+            const statusElement = document.getElementById('firebaseStatus');
+            statusElement.textContent = message;
+            statusElement.className = `firebase-status ${status}`;
+            console.log(`🔥 Firebase: ${message}`);
+        }
+
+        // =============================================
+        // 🖼️ FUNÇÕES DE IMAGEM
+        // =============================================
+
         function switchImageMethod(method) {
             currentImageMethod = method;
             const uploadBtn = document.getElementById('uploadMethodBtn');
@@ -1411,13 +2369,11 @@
         function handleImageUpload(event) {
             const file = event.target.files[0];
             if (file) {
-                // Validate file type
                 if (!file.type.startsWith('image/')) {
                     showAlert('⚠️ Por favor, selecione apenas arquivos de imagem', 'error');
                     return;
                 }
 
-                // Validate file size (5MB)
                 if (file.size > 5 * 1024 * 1024) {
                     showAlert('⚠️ A imagem deve ter no máximo 5MB', 'error');
                     return;
@@ -1461,6 +2417,10 @@
             });
         }
 
+        // =============================================
+        // ✅ VALIDAÇÃO DE FORMULÁRIO
+        // =============================================
+
         function validateProductForm() {
             const name = document.getElementById('productName').value.trim();
             const price = document.getElementById('productPrice').value.trim();
@@ -1474,7 +2434,6 @@
                 imageValid = imageUrl !== '';
             }
 
-            // Clear previous errors
             document.querySelectorAll('.form-input').forEach(input => {
                 input.classList.remove('error');
             });
@@ -1508,7 +2467,10 @@
             return isValid;
         }
 
-        // Event handlers
+        // =============================================
+        // 🎬 HANDLERS DE EVENTOS
+        // =============================================
+
         function handleWhatsApp(productId) {
             const product = products.find(p => p.id === productId);
             if (product) {
@@ -1520,13 +2482,20 @@
 
         function handleAdminLogin() {
             const password = document.getElementById('adminPassword').value;
-            if (password === 'admin123') {
+            if (password === adminPassword) {
                 isAdmin = true;
                 document.getElementById('adminModal').classList.add('hidden');
                 document.getElementById('adminActions').classList.add('show');
+                document.getElementById('adminToggle').classList.add('admin-active');
                 document.getElementById('adminPassword').value = '';
                 renderProducts();
-                showAlert('🎉 Login realizado com sucesso!');
+                updateProductStats();
+                
+                if (firebaseConnected) {
+                    showAlert('🔥 Admin Firebase ativado! Produtos salvos na nuvem automaticamente.');
+                } else {
+                    showAlert('⚠️ Admin ativo. Firebase offline - usando armazenamento local.');
+                }
             } else {
                 showAlert('❌ Senha incorreta!', 'error');
                 document.getElementById('adminPassword').value = '';
@@ -1538,9 +2507,8 @@
             const modal = document.getElementById('productModal');
             const title = document.getElementById('productModalTitle');
             
-            title.textContent = product ? '✏️ Editar Produto' : '✨ Novo Produto';
+            title.textContent = product ? '✏️ Editar Produto' : '✨ Adicionar Novo Produto';
             
-            // Reset image state
             uploadedImageData = null;
             currentImageMethod = 'upload';
             switchImageMethod('upload');
@@ -1549,19 +2517,17 @@
                 document.getElementById('productName').value = product.name;
                 document.getElementById('productPrice').value = product.price;
                 document.getElementById('productDescription').value = product.description;
+                document.getElementById('productCategory').value = product.category || 'outros';
                 document.getElementById('productFeatured').checked = product.featured;
                 
-                // Handle existing image
-                if (product.image.startsWith('data:')) {
-                    // It's a base64 uploaded image
+                if (product.image && product.image.startsWith('data:')) {
                     uploadedImageData = product.image;
                     const preview = document.getElementById('imagePreview');
                     preview.src = uploadedImageData;
                     preview.classList.remove('hidden');
                     switchImageMethod('upload');
                 } else {
-                    // It's a URL
-                    document.getElementById('productImageUrl').value = product.image;
+                    document.getElementById('productImageUrl').value = product.image || '';
                     switchImageMethod('url');
                 }
             } else {
@@ -1569,12 +2535,12 @@
                 document.getElementById('productPrice').value = '';
                 document.getElementById('productImageUrl').value = '';
                 document.getElementById('productDescription').value = '';
+                document.getElementById('productCategory').value = 'aneis';
                 document.getElementById('productFeatured').checked = false;
                 document.getElementById('productImageFile').value = '';
                 document.getElementById('imagePreview').classList.add('hidden');
             }
             
-            // Clear previous errors
             document.querySelectorAll('.form-input').forEach(input => {
                 input.classList.remove('error');
             });
@@ -1582,7 +2548,7 @@
             modal.classList.remove('hidden');
         }
 
-        function handleSaveProduct() {
+        async function handleSaveProduct() {
             if (!validateProductForm()) {
                 showAlert('⚠️ Preencha todos os campos obrigatórios', 'error');
                 return;
@@ -1591,6 +2557,7 @@
             const name = document.getElementById('productName').value.trim();
             const price = document.getElementById('productPrice').value.trim();
             const description = document.getElementById('productDescription').value.trim();
+            const category = document.getElementById('productCategory').value;
             const featured = document.getElementById('productFeatured').checked;
 
             let image;
@@ -1600,27 +2567,73 @@
                 image = document.getElementById('productImageUrl').value.trim();
             }
 
-            const productData = { name, price, image, description, featured };
+            const productData = { 
+                name, 
+                price, 
+                image, 
+                description, 
+                category, 
+                featured,
+                updatedAt: new Date().toISOString()
+            };
 
             if (editingProduct) {
                 productData.id = editingProduct.id;
+                productData.createdAt = editingProduct.createdAt;
                 products = products.map(p => p.id === editingProduct.id ? productData : p);
-                showAlert('✅ Produto atualizado com sucesso!');
+                
+                // Salvar no Firebase se conectado
+                if (firebaseConnected && isAdmin) {
+                    await saveProductToFirebase(productData);
+                }
+                
+                showAlert('✅ Produto atualizado!');
             } else {
                 productData.id = Date.now();
+                productData.createdAt = new Date().toISOString();
                 products.push(productData);
-                showAlert('🎉 Produto adicionado com sucesso!');
+                
+                // Salvar no Firebase se conectado
+                if (firebaseConnected && isAdmin) {
+                    await saveProductToFirebase(productData);
+                }
+                
+                showAlert('🎉 Produto adicionado!');
             }
 
+            // Marcar como alterações não salvas
+            markUnsavedChanges();
+            
+            // Sempre fazer backup local
+            saveToLocalStorage('mariana_products', products);
+            
             document.getElementById('productModal').classList.add('hidden');
             renderProducts();
+            updateProductStats();
         }
 
-        function handleDeleteProduct(id) {
+        async function handleDeleteProduct(id) {
             if (confirm('🗑️ Tem certeza que deseja excluir este produto?')) {
+                // Remover do Firebase se conectado
+                if (firebaseConnected && isAdmin) {
+                    await deleteProductFromFirebase(id);
+                }
+
+                // Remover da lista local
                 products = products.filter(p => p.id !== id);
+                favorites = favorites.filter(favId => favId !== id);
+                
+                // Marcar como alterações não salvas
+                markUnsavedChanges();
+                
+                // Sempre fazer backup local
+                saveToLocalStorage('mariana_products', products);
+                saveFavorites();
+                
+                updateFavoritesCounter();
                 renderProducts();
-                showAlert('🗑️ Produto excluído com sucesso!');
+                updateProductStats();
+                showAlert('🗑️ Produto excluído!');
             }
         }
 
@@ -1630,6 +2643,32 @@
                 showProductModal(product);
             }
         }
+
+        function duplicateProduct(productId) {
+            const product = products.find(p => p.id === productId);
+            if (product) {
+                const duplicatedProduct = {
+                    ...product,
+                    id: Date.now(),
+                    name: product.name + ' (Cópia)',
+                    featured: false,
+                    createdAt: new Date().toISOString()
+                };
+                products.push(duplicatedProduct);
+                
+                // Marcar como alterações não salvas
+                markUnsavedChanges();
+                
+                saveProducts();
+                renderProducts();
+                updateProductStats();
+                showAlert('📋 Produto duplicado!');
+            }
+        }
+
+        // =============================================
+        // 🎨 RENDERIZAÇÃO DA INTERFACE
+        // =============================================
 
         function renderProducts() {
             const grid = document.getElementById('productsGrid');
@@ -1644,6 +2683,7 @@
                 const card = document.createElement('div');
                 card.className = 'product-card';
                 card.style.animationDelay = (index * 0.1) + 's';
+                const isFavorited = favorites.includes(product.id);
 
                 card.innerHTML = `
                     <div class="product-image-container">
@@ -1663,13 +2703,18 @@
                                 <button class="admin-btn edit-btn" onclick="editProduct(${product.id})" title="Editar produto">
                                     <i class="fas fa-edit"></i>
                                 </button>
+                                <button class="admin-btn duplicate-btn" onclick="duplicateProduct(${product.id})" title="Duplicar produto">
+                                    <i class="fas fa-copy"></i>
+                                </button>
                                 <button class="admin-btn delete-btn" onclick="handleDeleteProduct(${product.id})" title="Excluir produto">
                                     <i class="fas fa-trash"></i>
                                 </button>
                             </div>
                         ` : ''}
                         
-                        <i class="fas fa-heart heart-icon" title="Favoritar"></i>
+                        <i class="fas fa-heart heart-icon ${isFavorited ? 'favorited' : ''}" 
+                           onclick="toggleFavorite(${product.id})" 
+                           title="${isFavorited ? 'Remover dos favoritos' : 'Adicionar aos favoritos'}"></i>
                     </div>
                     
                     <div class="product-info">
@@ -1688,6 +2733,10 @@
                 grid.appendChild(card);
             });
         }
+
+        // =============================================
+        // 🎬 CONFIGURAÇÃO DE EVENTOS
+        // =============================================
 
         function setupEventListeners() {
             // Admin toggle
@@ -1709,21 +2758,49 @@
 
             // Logout
             document.getElementById('logoutBtn').addEventListener('click', () => {
+                // Verificar se há alterações não salvas
+                if (hasUnsavedChanges) {
+                    if (!confirm('Você tem alterações não salvas. Deseja realmente sair do modo administrativo?')) {
+                        return;
+                    }
+                }
+                
                 isAdmin = false;
+                clearUnsavedChanges();
                 document.getElementById('adminActions').classList.remove('show');
+                document.getElementById('adminToggle').classList.remove('admin-active');
                 renderProducts();
-                showAlert('👋 Logout realizado com sucesso!');
+                updateProductStats();
+                showAlert('👋 Saindo do modo administrativo!');
             });
 
-            // Product modal
+            // Admin functions
             document.getElementById('newProductBtn').addEventListener('click', () => {
                 editingProduct = null;
                 showProductModal();
             });
 
+            document.getElementById('saveChangesBtn').addEventListener('click', saveAllChanges);
+            document.getElementById('syncFirebaseBtn').addEventListener('click', syncWithFirebase);
+            document.getElementById('changePasswordBtn').addEventListener('click', showChangePasswordModal);
+            document.getElementById('exportProductsBtn').addEventListener('click', exportProducts);
+            document.getElementById('resetDataBtn').addEventListener('click', resetAllData);
+
+            // Product modal
             document.getElementById('saveProductBtn').addEventListener('click', handleSaveProduct);
             document.getElementById('cancelProductBtn').addEventListener('click', () => {
                 document.getElementById('productModal').classList.add('hidden');
+            });
+
+            // Favorites modal
+            document.getElementById('closeFavoritesBtn').addEventListener('click', () => {
+                document.getElementById('favoritesModal').classList.add('hidden');
+            });
+
+            // Change Password modal
+            document.getElementById('savePasswordBtn').addEventListener('click', handlePasswordChange);
+            document.getElementById('cancelPasswordBtn').addEventListener('click', () => {
+                document.getElementById('changePasswordModal').classList.add('hidden');
             });
 
             // Enter key handlers
@@ -1736,6 +2813,8 @@
                 if (e.key === 'Escape') {
                     document.getElementById('adminModal').classList.add('hidden');
                     document.getElementById('productModal').classList.add('hidden');
+                    document.getElementById('favoritesModal').classList.add('hidden');
+                    document.getElementById('changePasswordModal').classList.add('hidden');
                     document.getElementById('adminActions').classList.remove('show');
                 }
             });
@@ -1753,6 +2832,18 @@
                 }
             });
 
+            document.getElementById('favoritesModal').addEventListener('click', (e) => {
+                if (e.target === e.currentTarget) {
+                    document.getElementById('favoritesModal').classList.add('hidden');
+                }
+            });
+
+            document.getElementById('changePasswordModal').addEventListener('click', (e) => {
+                if (e.target === e.currentTarget) {
+                    document.getElementById('changePasswordModal').classList.add('hidden');
+                }
+            });
+
             // Close admin panel when clicking outside
             document.addEventListener('click', (e) => {
                 const adminActions = document.getElementById('adminActions');
@@ -1764,9 +2855,23 @@
             });
         }
 
-        // Initialize
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('🚀 Inicializando Mariana Pratas 925...');
+        // =============================================
+        // 🚀 INICIALIZAÇÃO DA APLICAÇÃO
+        // =============================================
+
+        document.addEventListener('DOMContentLoaded', async function() {
+            console.log('🚀 Inicializando Mariana Pratas 925 com Firebase...');
+            
+            // Carregar senha administrativa personalizada
+            loadAdminPassword();
+            
+            // Inicializar Firebase primeiro
+            await initializeFirebase();
+            
+            // Carregar dados (Firebase ou localStorage)
+            console.log('📦 Carregando dados...');
+            await loadProducts();
+            loadFavorites();
             
             // Hide loading screen
             setTimeout(() => {
@@ -1774,22 +2879,333 @@
                 setTimeout(() => {
                     document.getElementById('loadingScreen').classList.add('hidden');
                 }, 800);
-            }, 1200);
+            }, 1500);
 
             setupEventListeners();
             setupDragAndDrop();
+            updateFavoritesCounter();
+            updateProductStats();
             renderProducts();
             
-            console.log('✨ Site inicializado com sucesso!');
+            console.log('✅ Site inicializado com sucesso!');
+            console.log(`📊 Estado: ${products.length} produtos, ${favorites.length} favoritos`);
+            console.log(`🔥 Firebase: ${firebaseConnected ? 'Conectado' : 'Offline'}`);
         });
 
-        // Make functions globally available
+        // Tornar funções globalmente disponíveis
         window.handleWhatsApp = handleWhatsApp;
         window.editProduct = editProduct;
+        window.duplicateProduct = duplicateProduct;
         window.handleDeleteProduct = handleDeleteProduct;
-        window.togglePassword = togglePassword;
+        window.toggleFavorite = toggleFavorite;
+        window.showFavorites = showFavorites;
         window.switchImageMethod = switchImageMethod;
         window.handleImageUpload = handleImageUpload;
+        window.togglePassword = togglePassword;
+        window.saveAllChanges = saveAllChanges;
+        window.showChangePasswordModal = showChangePasswordModal;
+        window.markUnsavedChanges = markUnsavedChanges;
+        window.clearUnsavedChanges = clearUnsavedChanges;
+
+        // =============================================
+        // 🔗 SERVICE WORKER (PWA)
+        // =============================================
+        
+        // Registrar Service Worker para PWA
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then((registration) => {
+                        console.log('✅ Service Worker registrado:', registration.scope);
+                    })
+                    .catch((error) => {
+                        console.log('❌ Falha ao registrar Service Worker:', error);
+                    });
+            });
+        }
+
+        // =============================================
+        // 📱 PWA INSTALL PROMPT
+        // =============================================
+        
+        let deferredPrompt;
+        
+        window.addEventListener('beforeinstallprompt', (e) => {
+            console.log('💻 PWA install prompt disponível');
+            e.preventDefault();
+            deferredPrompt = e;
+            
+            // Mostrar botão de instalação customizado (opcional)
+            const installBtn = document.createElement('button');
+            installBtn.textContent = '📱 Instalar App';
+            installBtn.className = 'btn btn-primary';
+            installBtn.style.position = 'fixed';
+            installBtn.style.bottom = '80px';
+            installBtn.style.right = '20px';
+            installBtn.style.zIndex = '1000';
+            installBtn.onclick = () => {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('✅ Usuário aceitou instalar o PWA');
+                    }
+                    deferredPrompt = null;
+                    installBtn.remove();
+                });
+            };
+            
+            setTimeout(() => {
+                document.body.appendChild(installBtn);
+                setTimeout(() => installBtn.remove(), 10000); // Remove após 10s
+            }, 5000); // Mostra após 5s
+        });
+
+        // =============================================
+        // 📊 ANALYTICS (Google Analytics 4)
+        // =============================================
+        
+        // Configurar Google Analytics (substitua GA_MEASUREMENT_ID)
+        function initializeAnalytics() {
+            if (typeof gtag !== 'undefined') {
+                // Eventos customizados
+                function trackEvent(action, category = 'engagement', label = '') {
+                    gtag('event', action, {
+                        event_category: category,
+                        event_label: label,
+                        value: 1
+                    });
+                }
+
+                // Track visualizações de produtos
+                window.trackProductView = (productId) => {
+                    const product = products.find(p => p.id === productId);
+                    if (product) {
+                        trackEvent('view_item', 'ecommerce', product.name);
+                    }
+                };
+
+                // Track cliques no WhatsApp
+                const originalHandleWhatsApp = window.handleWhatsApp;
+                window.handleWhatsApp = (productId) => {
+                    const product = products.find(p => p.id === productId);
+                    if (product) {
+                        trackEvent('begin_checkout', 'ecommerce', product.name);
+                    }
+                    originalHandleWhatsApp(productId);
+                };
+
+                // Track favoritos
+                const originalToggleFavorite = window.toggleFavorite;
+                window.toggleFavorite = (productId) => {
+                    const product = products.find(p => p.id === productId);
+                    const wasFavorited = favorites.includes(productId);
+                    if (product) {
+                        trackEvent(wasFavorited ? 'remove_from_wishlist' : 'add_to_wishlist', 'ecommerce', product.name);
+                    }
+                    originalToggleFavorite(productId);
+                };
+
+                console.log('📊 Google Analytics inicializado');
+            }
+        }
+
+        // Inicializar analytics após carregamento
+        setTimeout(initializeAnalytics, 2000);
+
+        // =============================================
+        // 🔍 SEO E PERFORMANCE
+        // =============================================
+
+        // Lazy loading para imagens
+        function setupLazyLoading() {
+            if ('IntersectionObserver' in window) {
+                const imageObserver = new IntersectionObserver((entries, observer) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const img = entry.target;
+                            if (img.dataset.src) {
+                                img.src = img.dataset.src;
+                                img.removeAttribute('data-src');
+                                observer.unobserve(img);
+                            }
+                        }
+                    });
+                });
+
+                document.querySelectorAll('img[data-src]').forEach(img => {
+                    imageObserver.observe(img);
+                });
+            }
+        }
+
+        // Configurar meta tags dinâmicas para produtos
+        function updatePageMeta(product = null) {
+            if (product) {
+                document.title = `${product.name} - Mariana Pratas 925`;
+                
+                const metaDescription = document.querySelector('meta[name="description"]');
+                if (metaDescription) {
+                    metaDescription.content = `${product.description} ${product.price} - Mariana Pratas 925`;
+                }
+
+                // Open Graph para compartilhamento social
+                const ogTitle = document.querySelector('meta[property="og:title"]');
+                const ogDescription = document.querySelector('meta[property="og:description"]');
+                const ogImage = document.querySelector('meta[property="og:image"]');
+                
+                if (ogTitle) ogTitle.content = `${product.name} - Mariana Pratas 925`;
+                if (ogDescription) ogDescription.content = product.description;
+                if (ogImage) ogImage.content = product.image;
+            }
+        }
+
+        // =============================================
+        // 🌙 MODO ESCURO (OPCIONAL)
+        // =============================================
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const isDark = document.body.classList.contains('dark-mode');
+            localStorage.setItem('darkMode', isDark ? 'enabled' : 'disabled');
+        }
+
+        // Carregar preferência de modo escuro
+        function loadDarkModePreference() {
+            const darkMode = localStorage.getItem('darkMode');
+            if (darkMode === 'enabled') {
+                document.body.classList.add('dark-mode');
+            }
+        }
+
+        // Aplicar no carregamento
+        document.addEventListener('DOMContentLoaded', loadDarkModePreference);
+
+        // =============================================
+        // 📱 NOTIFICAÇÕES PUSH (OPCIONAL)
+        // =============================================
+
+        function requestNotificationPermission() {
+            if ('Notification' in window && 'serviceWorker' in navigator) {
+                Notification.requestPermission().then(permission => {
+                    if (permission === 'granted') {
+                        console.log('✅ Permissão de notificação concedida');
+                    }
+                });
+            }
+        }
+
+        function showNotification(title, options = {}) {
+            if ('Notification' in window && Notification.permission === 'granted') {
+                if ('serviceWorker' in navigator) {
+                    navigator.serviceWorker.ready.then(registration => {
+                        registration.showNotification(title, {
+                            icon: '/icon-192x192.png',
+                            badge: '/icon-72x72.png',
+                            ...options
+                        });
+                    });
+                } else {
+                    new Notification(title, options);
+                }
+            }
+        }
+
+        // =============================================
+        // 🔄 SINCRONIZAÇÃO EM BACKGROUND
+        // =============================================
+
+        // Sincronizar dados quando a conexão voltar
+        window.addEventListener('online', () => {
+            console.log('🌐 Conexão restaurada');
+            if (firebaseConnected && isAdmin) {
+                syncWithFirebase();
+            }
+            showAlert('🌐 Conexão restaurada!');
+        });
+
+        window.addEventListener('offline', () => {
+            console.log('📱 Modo offline');
+            showAlert('📱 Modo offline - dados salvos localmente', 'error');
+        });
+
+        // =============================================
+        // 🔒 SEGURANÇA
+        // =============================================
+
+        // Prevenir clique direito em produção (opcional)
+        if (location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') {
+            document.addEventListener('contextmenu', e => e.preventDefault());
+            document.addEventListener('selectstart', e => e.preventDefault());
+            document.addEventListener('dragstart', e => e.preventDefault());
+        }
+
+        // Rate limiting para ações administrativas
+        let lastAdminAction = 0;
+        function rateLimitAdmin(action) {
+            const now = Date.now();
+            if (now - lastAdminAction < 1000) { // 1 segundo entre ações
+                showAlert('⚠️ Aguarde um pouco entre as ações', 'error');
+                return false;
+            }
+            lastAdminAction = now;
+            return true;
+        }
+
+        // Avisar antes de sair se houver alterações não salvas
+        window.addEventListener('beforeunload', (e) => {
+            if (hasUnsavedChanges && isAdmin) {
+                const message = 'Você tem alterações não salvas. Deseja realmente sair?';
+                e.preventDefault();
+                e.returnValue = message;
+                return message;
+            }
+        });
+
+        console.log('🎉 Mariana Pratas 925 - Sistema completo carregado!');
+        console.log('🔥 Firebase integrado | 💎 PWA Ready | 📱 Mobile First | 🔒 Seguro');
     </script>
+
+    <!-- Google Analytics 4 (substituir GA_MEASUREMENT_ID) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'GA_MEASUREMENT_ID');
+    </script>
+
+    <!-- Schema.org JSON-LD para SEO -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "OnlineStore",
+        "name": "Mariana Pratas 925",
+        "description": "Joias exclusivas em prata 925 com qualidade garantida",
+        "url": "https://marianapratas925.com",
+        "logo": "https://marianapratas925.com/logo.png",
+        "contactPoint": {
+            "@type": "ContactPoint",
+            "telephone": "+55-66-99926-6079",
+            "contactType": "customer service",
+            "availableLanguage": "Portuguese"
+        },
+        "sameAs": [
+            "https://wa.me/5566999266079"
+        ],
+        "offers": {
+            "@type": "AggregateOffer",
+            "priceCurrency": "BRL",
+            "lowPrice": "45.90",
+            "highPrice": "115.90"
+        }
+    }
+    </script>
+
+    <script>
+        document.getElementById("openImageManagerBtn").addEventListener("click", function () {
+            window.open("admin/image-manager.html", "_blank");
+        });
+    </script>
+
 </body>
 </html>
