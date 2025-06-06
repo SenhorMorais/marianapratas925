@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Organizador Automático - Mariana Pratas 925</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #8b5cf6;
+            --secondary: #ec4899;
+            --accent: #f59e0b;
+            --dark: #1f2937;
+            --light: #f8fafc;
+            --gray: #6b7280;
+            --success: #10b981;
+            --error: #ef4444;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #faf5ff 0%, #fff1f2 25%, #f0f9ff 50%, #faf5ff 75%, #fff1f2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px);
+            border-radius: 2rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .drop-zone {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px);
+            border: 3px dashed var(--primary);
+            border-radius: 2rem;
+            padding: 4rem 2rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .drop-zone:hover, .drop-zone.dragover {
+            border-color: var(--secondary);
+            background: rgba(139, 92, 246, 0.05);
+            transform: scale(1.02);
+        }
+
+        .drop-zone i {
+            font-size: 4rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .controls {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px);
+            border-radius: 2rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(139, 92, 246, 0.3);
+        }
+
+        .btn-success { background: linear-gradient(135deg, var(--success), #059669); }
+        .btn-warning { background: linear-gradient(135deg, var(--accent), #d97706); }
+        .btn-danger { background: linear-gradient(135deg, var(--error), #dc2626); }
+
+        .results {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px);
+            border-radius: 2rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .category-card {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            border: 2px solid rgba(139, 92, 246, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(139, 92, 246, 0.15);
+        }
+
+        .category-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .category-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .image-list {
+            list-style: none;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .image-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.5rem;
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+            background: rgba(139, 92, 246, 0.05);
+        }
+
+        .image-item img {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+
+        .log {
+            background: #1f2937;
+            color: #e5e7eb;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            max-height: 300px;
+            overflow-y: auto;
+            line-height: 1.6;
+        }
+
+        .log .success { color: #10b981; }
+        .log .error { color: #ef4444; }
+        .log .warning { color: #f59e0b; }
+        .log .info { color: #3b82f6; }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 1.5rem;
+            border-radius: 1rem;
+            text-align: center;
+            border: 2px solid rgba(139, 92, 246, 0.1);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            color: var(--gray);
+            margin-top: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1><i class="fas fa-magic"></i> Organizador Automático</h1>
+            <p>Organize suas imagens automaticamente por categoria e gere códigos</p>
+        </div>
+
+        <!-- Drop Zone -->
+        <div class="drop-zone" id="dropZone">
+            <i class="fas fa-cloud-upload-alt"></i>
+            <h2>Arraste suas imagens aqui</h2>
+            <p>Ou clique para selecionar múltiplas imagens</p>
+            <p style="margin-top: 1rem; color: var(--gray); font-size: 0.9rem;">
+                Suporte: JPG, PNG, WEBP • O sistema detectará automaticamente a categoria
+            </p>
+            <input type="file" id="fileInput" multiple accept="image/*" style="display: none;">
+        </div>
+
+        <!-- Stats -->
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-number" id="totalImages">0</div>
+                <div class="stat-label">Imagens Carregadas</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="categorizedImages">0</div>
+                <div class="stat-label">Categorizadas</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="renamedImages">0</div>
+                <div class="stat-label">Renomeadas</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="totalSize">0 MB</div>
+                <div class="stat-label">Tamanho Total</div>
+            </div>
+        </div>
+
+        <!-- Controls -->
+        <div class="controls">
+            <button class="btn" onclick="autoOrganize()">
+                <i class="fas fa-magic"></i> Organizar Tudo
+            </button>
+            <button class="btn btn-success" onclick="generateCode()">
+                <i class="fas fa-code"></i> Gerar Código
+            </button>
+            <button class="btn btn-warning" onclick="downloadStructure()">
+                <i class="fas fa-download"></i> Baixar Estrutura
+            </button>
+            <button class="btn btn-danger" onclick="clearAll()">
+                <i class="fas fa-trash"></i> Limpar Tudo
+            </button>
+        </div>
+
+        <!-- Results -->
+        <div class="results">
+            <h2><i class="fas fa-folder-open"></i> Imagens Organizadas</h2>
+            <div class="category-grid" id="categoryGrid">
+                <!-- Categories will be populated here -->
+            </div>
+        </div>
+
+        <!-- Log -->
+        <div class="results">
+            <h2><i class="fas fa-terminal"></i> Log de Operações</h2>
+            <div class="log" id="logOutput">
+                <div class="info">[INFO] 🚀 Organizador automático iniciado</div>
+                <div class="info">[INFO] 📁 Aguardando imagens para processar</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Estado da aplicação
+        let uploadedFiles = [];
+        let organizedImages = {
+            aneis: [],
+            colares: [],
+            brincos: [],
+            pulseiras: [],
+            conjuntos: [],
+            outros: []
+        };
+
+        // Configurações
+        const categories = {
+            aneis: { 
+                name: 'Anéis', 
+                icon: 'fas fa-ring',
+                keywords: ['anel', 'ring', 'alianca', 'solitario'],
+                prefix: 'anel'
+            },
+            colares: { 
+                name: 'Colares', 
+                icon: 'fas fa-gem',
+                keywords: ['colar', 'necklace', 'corrente', 'pingente'],
+                prefix: 'colar'
+            },
+            brincos: { 
+                name: 'Brincos', 
+                icon: 'fas fa-circle',
+                keywords: ['brinco', 'earring', 'argola', 'stud'],
+                prefix: 'brincos'
+            },
+            pulseiras: { 
+                name: 'Pulseiras', 
+                icon: 'fas fa-link',
+                keywords: ['pulseira', 'bracelet', 'bracelete'],
+                prefix: 'pulseira'
+            },
+            conjuntos: { 
+                name: 'Conjuntos', 
+                icon: 'fas fa-layer-group',
+                keywords: ['conjunto', 'set', 'kit'],
+                prefix: 'conjunto'
+            },
+            outros: { 
+                name: 'Outros', 
+                icon: 'fas fa-star',
+                keywords: [],
+                prefix: 'joia'
+            }
+        };
+
+        // Configurar drag and drop
+        function setupDropZone() {
+            const dropZone = document.getElementById('dropZone');
+            const fileInput = document.getElementById('fileInput');
+
+            dropZone.addEventListener('click', () => fileInput.click());
+
+            dropZone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                dropZone.classList.add('dragover');
+            });
+
+            dropZone.addEventListener('dragleave', () => {
+                dropZone.classList.remove('dragover');
+            });
+
+            dropZone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                dropZone.classList.remove('dragover');
+                handleFiles(e.dataTransfer.files);
+            });
+
+            fileInput.addEventListener('change', (e) => {
+                handleFiles(e.target.files);
+            });
+        }
+
+        // Processar arquivos
+        function handleFiles(files) {
+            log('info', `📥 Processando ${files.length} arquivos...`);
+            
+            Array.from(files).forEach((file, index) => {
+                if (file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        const imageData = {
+                            id: Date.now() + index,
+                            originalName: file.name,
+                            newName: generateNewName(file.name),
+                            category: detectCategory(file.name),
+                            size: file.size,
+                            data: e.target.result,
+                            processed: false
+                        };
+                        
+                        uploadedFiles.push(imageData);
+                        updateStats();
+                        log('success', `✅ ${file.name} → ${imageData.category}/${imageData.newName}`);
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    log('error', `❌ ${file.name} não é uma imagem válida`);
+                }
+            });
+        }
+
+        // Detectar categoria
+        function detectCategory(filename) {
+            const lower = filename.toLowerCase();
+            
+            for (const [categoryKey, categoryData] of Object.entries(categories)) {
+                if (categoryKey === 'outros') continue;
+                
+                for (const keyword of categoryData.keywords) {
+                    if (lower.includes(keyword)) {
+                        return categoryKey;
+                    }
+                }
+            }
+            
+            return 'outros';
+        }
+
+        // Gerar novo nome
+        function generateNewName(originalName) {
+            const extension = originalName.split('.').pop().toLowerCase();
+            const category = detectCategory(originalName);
+            const prefix = categories[category].prefix;
+            const timestamp = Date.now().toString().slice(-6);
+            
+            // Tentar extrair características do nome original
+            const lower = originalName.toLowerCase();
+            let descriptor = '';
+            
+            if (lower.includes('solitario')) descriptor = '-solitario';
+            else if (lower.includes('delicado')) descriptor = '-delicado';
+            else if (lower.includes('premium')) descriptor = '-premium';
+            else if (lower.includes('classico')) descriptor = '-classico';
+            else if (lower.includes('moderno')) descriptor = '-moderno';
+            else if (lower.includes('elegante')) descriptor = '-elegante';
+            else descriptor = '-' + timestamp.slice(0, 2);
+            
+            return `${prefix}${descriptor}-${timestamp.slice(-2)}.${extension}`;
+        }
+
+        // Organizar automaticamente
+        function autoOrganize() {
+            log('info', '🎯 Iniciando organização automática...');
+            
+            uploadedFiles.forEach(file => {
+                if (!file.processed) {
+                    organizedImages[file.category].push(file);
+                    file.processed = true;
+                }
+            });
+            
+            renderCategories();
+            updateStats();
+            log('success', '🎉 Organização automática concluída!');
+        }
+
+        // Renderizar categorias
+        function renderCategories() {
+            const grid = document.getElementById('categoryGrid');
+            grid.innerHTML = '';
+            
+            Object.entries(organizedImages).forEach(([categoryKey, images]) => {
+                if (images.length === 0) return;
+                
+                const categoryData = categories[categoryKey];
+                const card = document.createElement('div');
+                card.className = 'category-card';
+                
+                card.innerHTML = `
+                    <div class="category-header">
+                        <div class="category-icon">
+                            <i class="${categoryData.icon}"></i>
+                        </div>
+                        <div>
+                            <h3>${categoryData.name}</h3>
+                            <p style="color: var(--gray); font-size: 0.9rem;">${images.length} imagens</p>
+                        </div>
+                    </div>
+                    <ul class="image-list">
+                        ${images.map(img => `
+                            <li class="image-item">
+                                <img src="${img.data}" alt="${img.newName}">
+                                <div>
+                                    <div style="font-size: 0.9rem; font-weight: 600;">${img.newName}</div>
+                                    <div style="font-size: 0.8rem; color: var(--gray);">${(img.size / 1024).toFixed(1)} KB</div>
+                                </div>
+                            </li>
+                        `).join('')}
+                    </ul>
+                `;
+                
+                grid.appendChild(card);
+            });
+        }
+
+        // Gerar código
+        function generateCode() {
+            if (uploadedFiles.length === 0) {
+                log('error', '❌ Nenhuma imagem para gerar código');
+                return;
+            }
+            
+            let code = '// Produtos gerados automaticamente\nfunction getDefaultProducts() {\n    return [\n';
+            
+            uploadedFiles.forEach((img, index) => {
+                const id = index + 1;
+                const categoryData = categories[img.category];
+                const imagePath = `./assets/images/joias/${img.category}/${img.newName}`;
+                
+                code += `        {\n`;
+                code += `            id: ${id},\n`;
+                code += `            name: '${generateProductName(img)}',\n`;
+                code += `            price: 'R$ ${generatePrice()},90',\n`;
+                code += `            image: '${imagePath}',\n`;
+                code += `            description: '${generateDescription(img)}',\n`;
+                code += `            category: '${img.category}',\n`;
+                code += `            featured: ${Math.random() > 0.7},\n`;
+                code += `            createdAt: new Date().toISOString()\n`;
+                code += `        }${index < uploadedFiles.length - 1 ? ',' : ''}\n`;
+            });
+            
+            code += '    ];\n}';
+            
+            // Mostrar modal com código
+            showCodeModal(code);
+            log('success', '📋 Código gerado com sucesso!');
+        }
+
+        // Gerar nome do produto
+        function generateProductName(img) {
+            const categoryData = categories[img.category];
+            const base = categoryData.name.slice(0, -1); // Remove 's' do final
+            
+            const descriptors = [
+                'Elegante', 'Delicado', 'Premium', 'Clássico', 
+                'Moderno', 'Sofisticado', 'Exclusivo', 'Especial'
+            ];
+            
+            const materials = [
+                'Prata 925', 'Com Zircônia', 'Banho Dourado', 
+                'Pedras Naturais', 'Design Único'
+            ];
+            
+            const descriptor = descriptors[Math.floor(Math.random() * descriptors.length)];
+            const material = materials[Math.floor(Math.random() * materials.length)];
+            
+            return `${base} ${descriptor} ${material}`;
+        }
+
+        // Gerar preço
+        function generatePrice() {
+            const prices = [45, 55, 65, 75, 85, 95, 105, 115, 125, 135];
+            return prices[Math.floor(Math.random() * prices.length)];
+        }
+
+        // Gerar descrição
+        function generateDescription(img) {
+            const categoryData = categories[img.category];
+            
+            const descriptions = {
+                aneis: [
+                    'Anel elegante em prata 925 com acabamento premium.',
+                    'Design sofisticado perfeito para ocasiões especiais.',
+                    'Peça única com detalhes em zircônia cravejada.'
+                ],
+                colares: [
+                    'Colar delicado em prata 925 com pingente exclusivo.',
+                    'Corrente fina e elegante para uso diário.',
+                    'Design atemporal que nunca sai de moda.'
+                ],
+                brincos: [
+                    'Par de brincos em prata 925 com design moderno.',
+                    'Peças delicadas perfeitas para qualquer ocasião.',
+                    'Acabamento premium com brilho duradouro.'
+                ],
+                pulseiras: [
+                    'Pulseira elegante em prata 925 com elos delicados.',
+                    'Design feminino e sofisticado.',
+                    'Peça versátil para compor diversos looks.'
+                ],
+                conjuntos: [
+                    'Conjunto completo em prata 925 com design harmonioso.',
+                    'Peças coordenadas para um visual impecável.',
+                    'Kit perfeito para presentes especiais.'
+                ],
+                outros: [
+                    'Acessório exclusivo em prata 925.',
+                    'Peça especial com design único.',
+                    'Acabamento artesanal de alta qualidade.'
+                ]
+            };
+            
+            const categoryDescriptions = descriptions[img.category] || descriptions.outros;
+            return categoryDescriptions[Math.floor(Math.random() * categoryDescriptions.length)];
+        }
+
+        // Mostrar modal com código
+        function showCodeModal(code) {
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+                background: rgba(0, 0, 0, 0.8); z-index: 10000;
+                display: flex; align-items: center; justify-content: center;
+                padding: 2rem;
+            `;
+            
+            modal.innerHTML = `
+                <div style="background: white; border-radius: 2rem; padding: 2rem; max-width: 900px; width: 100%; max-height: 80vh; overflow-y: auto;">
+                    <h3 style="margin-bottom: 1rem; color: var(--dark);">
+                        <i class="fas fa-code"></i> Código Gerado
+                    </h3>
+                    <p style="margin-bottom: 1rem; color: var(--gray);">
+                        Copie este código e substitua a função getDefaultProducts() no seu index.html:
+                    </p>
+                    <textarea style="width: 100%; height: 400px; font-family: monospace; padding: 1rem; border: 2px solid var(--primary); border-radius: 1rem; font-size: 0.9rem;" readonly>${code}</textarea>
+                    <div style="margin-top: 1rem; display: flex; gap: 1rem; justify-content: center;">
+                        <button onclick="this.closest('div').parentElement.remove()" class="btn">
+                            <i class="fas fa-times"></i> Fechar
+                        </button>
+                        <button onclick="copyToClipboard('${code.replace(/'/g, "\\'")}'); showNotification('📋 Código copiado!')" class="btn btn-success">
+                            <i class="fas fa-copy"></i> Copiar Código
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+        }
+
+        // Baixar estrutura
+        function downloadStructure() {
+            const structure = {
+                folders: Object.keys(categories),
+                images: organizedImages,
+                totalImages: uploadedFiles.length,
+                generatedAt: new Date().toISOString()
+            };
+            
+            const dataStr = JSON.stringify(structure, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            const url = URL.createObjectURL(dataBlob);
+            
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `mariana-estrutura-${new Date().toISOString().split('T')[0]}.json`;
+            link.click();
+            
+            URL.revokeObjectURL(url);
+            log('success', '📥 Estrutura baixada com sucesso!');
+        }
+
+        // Limpar tudo
+        function clearAll() {
+            if (confirm('🗑️ Tem certeza que deseja limpar todas as imagens?')) {
+                uploadedFiles = [];
+                organizedImages = {
+                    aneis: [], colares: [], brincos: [],
+                    pulseiras: [], conjuntos: [], outros: []
+                };
+                
+                document.getElementById('categoryGrid').innerHTML = '';
+                updateStats();
+                log('warning', '🗑️ Todas as imagens foram removidas');
+            }
+        }
+
+        // Atualizar estatísticas
+        function updateStats() {
+            const totalImages = uploadedFiles.length;
+            const categorizedImages = uploadedFiles.filter(img => img.processed).length;
+            const renamedImages = uploadedFiles.filter(img => img.originalName !== img.newName).length;
+            const totalSize = uploadedFiles.reduce((sum, img) => sum + img.size, 0);
+            
+            document.getElementById('totalImages').textContent = totalImages;
+            document.getElementById('categorizedImages').textContent = categorizedImages;
+            document.getElementById('renamedImages').textContent = renamedImages;
+            document.getElementById('totalSize').textContent = (totalSize / (1024 * 1024)).toFixed(2) + ' MB';
+        }
+
+        // Log
+        function log(type, message) {
+            const logOutput = document.getElementById('logOutput');
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = document.createElement('div');
+            logEntry.className = type;
+            logEntry.textContent = `[${timestamp}] ${message}`;
+            logOutput.appendChild(logEntry);
+            logOutput.scrollTop = logOutput.scrollHeight;
+        }
+
+        // Copiar para clipboard
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text);
+        }
+
+        // Notificação
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed; top: 20px; right: 20px;
+                background: var(--success); color: white;
+                padding: 1rem 2rem; border-radius: 50px;
+                z-index: 10001; font-weight: 600;
+                transform: translateX(100%);
+                transition: all 0.3s ease;
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => notification.style.transform = 'translateX(0)', 100);
+            setTimeout(() => {
+                notification.style.transform = 'translateX(100%)';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+
+        // Inicializar
+        document.addEventListener('DOMContentLoaded', () => {
+            setupDropZone();
+            updateStats();
+            log('success', '🚀 Organizador automático pronto para uso!');
+        });
+    </script>
+</body>
+</html>
