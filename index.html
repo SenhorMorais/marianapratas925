@@ -246,6 +246,17 @@
             box-shadow: 0 8px 25px rgba(239, 68, 68, 0.4);
         }
 
+        .btn-warning {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+        }
+
+        .btn-warning:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(245, 158, 11, 0.4);
+        }
+
         /* Header with blur effect */
         .header {
             position: fixed;
@@ -1048,6 +1059,98 @@
             color: var(--danger);
         }
 
+        /* Password Change Styles */
+        .password-change-section {
+            background: linear-gradient(135deg, #fff7ed, #fef3c7);
+            border: 2px solid #fed7aa;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 32px;
+        }
+
+        .password-change-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .password-change-header i {
+            color: #f59e0b;
+            font-size: 24px;
+        }
+
+        .password-change-header h3 {
+            color: #92400e;
+            margin: 0;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .password-form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .password-strength {
+            margin-top: 8px;
+            font-size: 12px;
+        }
+
+        .password-strength.weak {
+            color: var(--danger);
+        }
+
+        .password-strength.medium {
+            color: var(--warning);
+        }
+
+        .password-strength.strong {
+            color: var(--success);
+        }
+
+        .password-requirements {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 16px;
+            font-size: 13px;
+        }
+
+        .password-requirements h4 {
+            color: #1d4ed8;
+            margin: 0 0 12px 0;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .password-requirements ul {
+            margin: 0;
+            padding-left: 20px;
+            color: #1e40af;
+        }
+
+        .password-requirements li {
+            margin-bottom: 4px;
+        }
+
+        .password-success-message {
+            background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+            border: 1px solid #bbf7d0;
+            color: #15803d;
+            padding: 16px;
+            border-radius: 12px;
+            margin-top: 16px;
+            font-size: 14px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
         /* Floating Elements Animation */
         .floating-elements {
             position: absolute;
@@ -1188,6 +1291,16 @@
                 text-align: center;
             }
 
+            .admin-title {
+                flex-direction: column;
+                gap: 8px;
+            }
+            
+            .status-badge {
+                font-size: 10px;
+                padding: 6px 12px;
+            }
+
             .admin-actions {
                 width: 100%;
                 justify-content: center;
@@ -1241,6 +1354,25 @@
                 width: 150px;
                 height: 120px;
                 font-size: 12px;
+            }
+            
+            /* Password change mobile styles */
+            .password-form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .password-change-section {
+                margin: 16px 0;
+                padding: 20px 16px;
+            }
+            
+            .password-requirements {
+                padding: 12px;
+                font-size: 12px;
+            }
+            
+            .password-requirements ul {
+                padding-left: 16px;
             }
         }
 
@@ -1475,6 +1607,9 @@
                             <i class="fas fa-lock" style="color: var(--success); font-size: 24px;"></i>
                             <h1>Painel Administrativo</h1>
                             <span class="status-badge">Conectado</span>
+                            <span id="passwordStatusBadge" class="status-badge" style="background: linear-gradient(135deg, #fef3c7, #fde68a); color: #92400e;">
+                                🔐 Senha Padrão
+                            </span>
                         </div>
                         <div class="admin-actions">
                             <button onclick="showPage('home')" class="btn btn-secondary">
@@ -1493,6 +1628,92 @@
             <div class="container admin-content">
                 <!-- Success/Error Messages -->
                 <div id="adminMessage" class="hidden"></div>
+
+                <!-- Change Password Section -->
+                <div class="password-change-section">
+                    <div class="password-change-header">
+                        <i class="fas fa-key"></i>
+                        <h3>Alterar Senha de Acesso</h3>
+                    </div>
+                    
+                    <form onsubmit="handlePasswordChange(event)">
+                        <div class="password-form-grid">
+                            <div class="form-group">
+                                <label for="currentPassword">Senha Atual</label>
+                                <div class="input-group">
+                                    <input 
+                                        type="password" 
+                                        id="currentPassword" 
+                                        class="form-input" 
+                                        placeholder="Digite sua senha atual"
+                                        required
+                                    >
+                                    <button type="button" class="toggle-password" onclick="togglePasswordField('currentPassword', 'currentPasswordIcon')" aria-label="Mostrar/ocultar senha">
+                                        <i class="fas fa-eye" id="currentPasswordIcon"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="newPassword">Nova Senha</label>
+                                <div class="input-group">
+                                    <input 
+                                        type="password" 
+                                        id="newPassword" 
+                                        class="form-input" 
+                                        placeholder="Digite sua nova senha"
+                                        required
+                                        minlength="6"
+                                        oninput="checkPasswordStrength(this.value)"
+                                    >
+                                    <button type="button" class="toggle-password" onclick="togglePasswordField('newPassword', 'newPasswordIcon')" aria-label="Mostrar/ocultar senha">
+                                        <i class="fas fa-eye" id="newPasswordIcon"></i>
+                                    </button>
+                                </div>
+                                <div id="passwordStrength" class="password-strength"></div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="confirmPassword">Confirmar Nova Senha</label>
+                                <div class="input-group">
+                                    <input 
+                                        type="password" 
+                                        id="confirmPassword" 
+                                        class="form-input" 
+                                        placeholder="Confirme sua nova senha"
+                                        required
+                                        minlength="6"
+                                        oninput="checkPasswordMatch()"
+                                    >
+                                    <button type="button" class="toggle-password" onclick="togglePasswordField('confirmPassword', 'confirmPasswordIcon')" aria-label="Mostrar/ocultar senha">
+                                        <i class="fas fa-eye" id="confirmPasswordIcon"></i>
+                                    </button>
+                                </div>
+                                <div id="passwordMatch" class="password-strength"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="password-requirements">
+                            <h4><i class="fas fa-info-circle"></i> Requisitos da Senha</h4>
+                            <ul>
+                                <li>Mínimo de 6 caracteres</li>
+                                <li>Recomendado: use letras, números e símbolos</li>
+                                <li>Evite senhas muito simples como "123456"</li>
+                                <li>Não use informações pessoais</li>
+                            </ul>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-warning" id="changePasswordBtn">
+                            <i class="fas fa-key"></i>
+                            <span>Alterar Senha</span>
+                        </button>
+                        
+                        <div id="passwordChangeSuccess" class="password-success-message hidden">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Senha alterada com sucesso! Use a nova senha no próximo login.</span>
+                        </div>
+                    </form>
+                </div>
 
                 <!-- Add New Product -->
                 <div class="admin-card">
@@ -2077,7 +2298,7 @@ Gostaria de saber mais sobre:
 
 Aguardo seu retorno! 😊`;
             
-            const whatsappNumber = '5566999267679'; // Fixed format for WhatsApp
+            const whatsappNumber = '5566999266079'; // +55 66 99926-6079
             const encodedMessage = encodeURIComponent(message);
             return `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
         }
@@ -2105,8 +2326,9 @@ Aguardo seu retorno! 😊`;
             if (!passwordInput || !errorDiv) return;
             
             const password = passwordInput.value;
+            const currentPassword = getCurrentPassword();
             
-            if (password === 'mariana2025') {
+            if (password === currentPassword) {
                 window.isAuthenticated = true;
                 errorDiv.classList.add('hidden');
                 showPage('admin');
@@ -2133,6 +2355,13 @@ Aguardo seu retorno! 😊`;
                 passwordInput.value = '';
             }
             window.editingProductId = null;
+            
+            // Clear any password form fields if they exist
+            const passwordFields = ['currentPassword', 'newPassword', 'confirmPassword'];
+            passwordFields.forEach(fieldId => {
+                const field = document.getElementById(fieldId);
+                if (field) field.value = '';
+            });
         }
 
         function togglePassword() {
@@ -2201,6 +2430,9 @@ Aguardo seu retorno! 😊`;
         function renderAdminProducts() {
             const container = document.getElementById('adminProductsList');
             if (!container) return;
+            
+            // Update password status when admin page loads
+            updatePasswordStatus();
             
             container.innerHTML = '';
             
@@ -2483,6 +2715,204 @@ Aguardo seu retorno! 😊`;
                     console.error('Error deleting product:', error);
                     showMessage('❌ Erro ao excluir produto: ' + error.message, 'error');
                 });
+        }
+
+        // Password management functions
+        function getCurrentPassword() {
+            // Get stored password or return default
+            return localStorage.getItem('adminPassword') || 'mariana2025';
+        }
+
+        function setNewPassword(password) {
+            localStorage.setItem('adminPassword', password);
+            updatePasswordStatus();
+        }
+
+        function updatePasswordStatus() {
+            const statusBadge = document.getElementById('passwordStatusBadge');
+            if (!statusBadge) return;
+            
+            const hasCustomPassword = localStorage.getItem('adminPassword');
+            if (hasCustomPassword) {
+                statusBadge.innerHTML = '🔒 Senha Personalizada';
+                statusBadge.style.background = 'linear-gradient(135deg, #d1fae5, #a7f3d0)';
+                statusBadge.style.color = '#065f46';
+            } else {
+                statusBadge.innerHTML = '🔐 Senha Padrão';
+                statusBadge.style.background = 'linear-gradient(135deg, #fef3c7, #fde68a)';
+                statusBadge.style.color = '#92400e';
+            }
+        }
+
+        function togglePasswordField(fieldId, iconId) {
+            const passwordInput = document.getElementById(fieldId);
+            const passwordIcon = document.getElementById(iconId);
+            
+            if (!passwordInput || !passwordIcon) return;
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                passwordIcon.className = 'fas fa-eye-slash';
+            } else {
+                passwordInput.type = 'password';
+                passwordIcon.className = 'fas fa-eye';
+            }
+        }
+
+        function checkPasswordStrength(password) {
+            const strengthElement = document.getElementById('passwordStrength');
+            if (!strengthElement) return;
+            
+            if (password.length === 0) {
+                strengthElement.textContent = '';
+                strengthElement.className = 'password-strength';
+                return;
+            }
+            
+            let strength = 0;
+            const checks = [
+                password.length >= 6,
+                /[a-z]/.test(password),
+                /[A-Z]/.test(password),
+                /\d/.test(password),
+                /[!@#$%^&*(),.?":{}|<>]/.test(password),
+                password.length >= 10
+            ];
+            
+            strength = checks.filter(Boolean).length;
+            
+            if (strength <= 2) {
+                strengthElement.textContent = '⚠️ Senha fraca';
+                strengthElement.className = 'password-strength weak';
+            } else if (strength <= 4) {
+                strengthElement.textContent = '🔶 Senha média';
+                strengthElement.className = 'password-strength medium';
+            } else {
+                strengthElement.textContent = '✅ Senha forte';
+                strengthElement.className = 'password-strength strong';
+            }
+        }
+
+        function checkPasswordMatch() {
+            const newPassword = document.getElementById('newPassword');
+            const confirmPassword = document.getElementById('confirmPassword');
+            const matchElement = document.getElementById('passwordMatch');
+            
+            if (!newPassword || !confirmPassword || !matchElement) return;
+            
+            if (confirmPassword.value.length === 0) {
+                matchElement.textContent = '';
+                matchElement.className = 'password-strength';
+                return;
+            }
+            
+            if (newPassword.value === confirmPassword.value) {
+                matchElement.textContent = '✅ Senhas coincidem';
+                matchElement.className = 'password-strength strong';
+            } else {
+                matchElement.textContent = '❌ Senhas não coincidem';
+                matchElement.className = 'password-strength weak';
+            }
+        }
+
+        function handlePasswordChange(event) {
+            event.preventDefault();
+            
+            const currentPasswordInput = document.getElementById('currentPassword');
+            const newPasswordInput = document.getElementById('newPassword');
+            const confirmPasswordInput = document.getElementById('confirmPassword');
+            const changePasswordBtn = document.getElementById('changePasswordBtn');
+            const successMessage = document.getElementById('passwordChangeSuccess');
+            
+            if (!currentPasswordInput || !newPasswordInput || !confirmPasswordInput || !changePasswordBtn) {
+                showMessage('Erro: Elementos do formulário não encontrados.', 'error');
+                return;
+            }
+            
+            const currentPassword = currentPasswordInput.value;
+            const newPassword = newPasswordInput.value;
+            const confirmPassword = confirmPasswordInput.value;
+            
+            // Validate current password
+            if (currentPassword !== getCurrentPassword()) {
+                showMessage('❌ Senha atual incorreta.', 'error');
+                currentPasswordInput.focus();
+                return;
+            }
+            
+            // Validate new password
+            if (newPassword.length < 6) {
+                showMessage('❌ A nova senha deve ter pelo menos 6 caracteres.', 'error');
+                newPasswordInput.focus();
+                return;
+            }
+            
+            // Check if passwords match
+            if (newPassword !== confirmPassword) {
+                showMessage('❌ As senhas não coincidem.', 'error');
+                confirmPasswordInput.focus();
+                return;
+            }
+            
+            // Check if new password is too weak
+            const weakPasswords = ['123456', 'password', 'admin', 'mariana', 'pratas', '111111', 'abc123'];
+            if (weakPasswords.includes(newPassword.toLowerCase())) {
+                showMessage('❌ Esta senha é muito comum. Escolha uma senha mais segura.', 'error');
+                newPasswordInput.focus();
+                return;
+            }
+            if (newPassword === currentPassword) {
+                showMessage('❌ A nova senha deve ser diferente da senha atual.', 'error');
+                newPasswordInput.focus();
+                return;
+            }
+            
+            // Disable button and show loading
+            changePasswordBtn.disabled = true;
+            changePasswordBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <span>Alterando...</span>';
+            
+            // Simulate processing time
+            setTimeout(() => {
+                try {
+                    // Save new password
+                    setNewPassword(newPassword);
+                    
+                    // Clear form
+                    currentPasswordInput.value = '';
+                    newPasswordInput.value = '';
+                    confirmPasswordInput.value = '';
+                    
+                    // Clear strength indicators
+                    const strengthElement = document.getElementById('passwordStrength');
+                    const matchElement = document.getElementById('passwordMatch');
+                    if (strengthElement) {
+                        strengthElement.textContent = '';
+                        strengthElement.className = 'password-strength';
+                    }
+                    if (matchElement) {
+                        matchElement.textContent = '';
+                        matchElement.className = 'password-strength';
+                    }
+                    
+                    // Show success message
+                    if (successMessage) {
+                        successMessage.classList.remove('hidden');
+                        setTimeout(() => {
+                            successMessage.classList.add('hidden');
+                        }, 5000);
+                    }
+                    
+                    showMessage('✅ Senha alterada com sucesso! Use a nova senha no próximo login.', 'success');
+                    
+                } catch (error) {
+                    console.error('Error changing password:', error);
+                    showMessage('❌ Erro ao alterar senha. Tente novamente.', 'error');
+                } finally {
+                    // Re-enable button
+                    changePasswordBtn.disabled = false;
+                    changePasswordBtn.innerHTML = '<i class="fas fa-key"></i> <span>Alterar Senha</span>';
+                }
+            }, 1000);
         }
 
         // Enhanced loading for smooth transitions
