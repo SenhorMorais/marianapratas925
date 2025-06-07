@@ -1402,6 +1402,24 @@
                 min-height: 60px;
                 font-size: 14px;
             }
+            
+            .cors-warning {
+                margin: 16px 0 24px 0 !important;
+                padding: 16px !important;
+            }
+            
+            .cors-warning h3 {
+                font-size: 16px !important;
+            }
+            
+            .cors-warning p, .cors-warning li {
+                font-size: 13px !important;
+            }
+            
+            .upload-warning {
+                font-size: 12px !important;
+                padding: 10px !important;
+            }
         }
 
         @media (max-width: 480px) {
@@ -1640,9 +1658,9 @@
                             </span>
                         </div>
                         <div class="admin-actions">
-                            <button onclick="window.open('https://senhormorais.github.io/gerador/', '_blank')" class="btn btn-info">
+                            <button onclick="window.open('https://senhormorais.github.io/gerador/', '_blank')" class="btn btn-info" title="Encontre imagens gratuitas para seus produtos">
                                 <i class="fas fa-images"></i>
-                                <span>Gerador de Fotos</span>
+                                <span>🖼️ Gerador de Fotos</span>
                             </button>
                             <button onclick="showPage('home')" class="btn btn-secondary">
                                 <i class="fas fa-eye"></i>
@@ -1660,6 +1678,26 @@
             <div class="container admin-content">
                 <!-- Success/Error Messages -->
                 <div id="adminMessage" class="hidden"></div>
+
+                <!-- CORS Warning -->
+                <div class="cors-warning" style="background: linear-gradient(135deg, #eff6ff, #dbeafe); border: 2px solid #3b82f6; border-radius: 16px; padding: 20px; margin-bottom: 32px;">
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+                        <i class="fas fa-info-circle" style="color: #3b82f6; font-size: 20px;"></i>
+                        <h3 style="color: #1e40af; margin: 0; font-size: 18px; font-weight: 700;">📸 Como Adicionar Imagens aos Produtos</h3>
+                    </div>
+                    <div style="color: #1e40af; font-size: 14px; line-height: 1.5;">
+                        <p style="margin: 0 0 8px 0;"><strong>⚠️ Upload direto não funciona</strong> porque seu site usa HTTP (não HTTPS).</p>
+                        <p style="margin: 0 0 12px 0;"><strong>✅ Use estas alternativas:</strong></p>
+                        <ul style="margin: 0 0 12px 20px; padding: 0;">
+                            <li><strong>🖼️ Gerador de Fotos</strong> - Clique no botão azul acima para imagens gratuitas</li>
+                            <li><strong>🌐 Sites de upload</strong> - Use imgur.com, postimg.cc ou similar e cole a URL</li>
+                            <li><strong>🔒 HTTPS</strong> - Configure SSL no seu domínio para habilitar upload direto</li>
+                        </ul>
+                        <p style="margin: 0; background: rgba(59, 130, 246, 0.1); padding: 8px; border-radius: 6px; font-size: 13px;">
+                            💡 <strong>Dica:</strong> Sempre use a aba "URL (Recomendado)" em vez de "Upload"
+                        </p>
+                    </div>
+                </div>
 
                 <!-- Change Password Section -->
                 <div class="password-change-section">
@@ -1783,22 +1821,37 @@
                             <div class="image-input-group">
                                 <div class="image-option-tabs">
                                     <button type="button" class="tab-button active" onclick="switchImageTab('url', 'new')">
-                                        <i class="fas fa-link"></i> URL
+                                        <i class="fas fa-link"></i> URL (Recomendado)
                                     </button>
                                     <button type="button" class="tab-button" onclick="switchImageTab('upload', 'new')">
                                         <i class="fas fa-upload"></i> Upload
                                     </button>
                                 </div>
+                                
+                                <!-- Upload Warning -->
+                                <div class="upload-warning" style="background: linear-gradient(135deg, #fef3c7, #fde68a); border: 1px solid #f59e0b; border-radius: 8px; padding: 12px; margin-bottom: 12px; font-size: 13px; color: #92400e;">
+                                    <i class="fas fa-exclamation-triangle" style="margin-right: 6px;"></i>
+                                    <strong>Problema de Upload:</strong> Use o <strong>Gerador de Fotos</strong> ou URLs externas. O upload direto pode falhar devido a configurações CORS.
+                                </div>
+                                
                                 <div id="newUrlInput" class="image-input-content">
                                     <input 
                                         type="url" 
                                         id="newProductImage" 
-                                        placeholder="URL da imagem" 
+                                        placeholder="Cole aqui a URL da imagem (recomendado)" 
                                         class="form-input"
                                         oninput="previewImage(this, 'newImagePreview')"
                                     >
+                                    <div style="margin-top: 8px; font-size: 12px; color: #6b7280;">
+                                        💡 Dica: Use o botão <strong>"Gerador de Fotos"</strong> no topo para encontrar imagens gratuitas
+                                    </div>
                                 </div>
                                 <div id="newUploadInput" class="image-input-content hidden">
+                                    <div style="background: #fef2f2; border: 1px solid #fecaca; border-radius: 8px; padding: 12px; margin-bottom: 12px; font-size: 13px; color: #dc2626;">
+                                        <i class="fas fa-info-circle" style="margin-right: 6px;"></i>
+                                        <strong>Limitações do Upload:</strong> Funciona apenas em HTTPS. Para HTTP, use URLs externas.
+                                    </div>
+                                    
                                     <div class="file-input-wrapper">
                                         <input 
                                             type="file" 
@@ -1816,6 +1869,13 @@
                                         <div class="upload-progress-bar" id="newUploadProgressBar"></div>
                                     </div>
                                     <div id="newUploadStatus" class="upload-status"></div>
+                                    
+                                    <div style="margin-top: 12px; padding: 8px; background: #f3f4f6; border-radius: 6px; font-size: 12px; color: #4b5563;">
+                                        <strong>Alternativas:</strong><br>
+                                        • Use o <strong>Gerador de Fotos</strong> (botão no topo)<br>
+                                        • Faça upload em sites como imgur.com ou postimg.cc<br>
+                                        • Configure HTTPS no seu domínio
+                                    </div>
                                 </div>
                             </div>
                             
@@ -2218,9 +2278,15 @@
             statusElement.className = 'upload-status uploading';
             
             try {
+                // Check if we're on HTTP instead of HTTPS
+                if (window.location.protocol === 'http:' && window.location.hostname !== 'localhost') {
+                    throw new Error('Upload requer HTTPS. Use uma URL de imagem externa ou configure HTTPS no seu domínio.');
+                }
+                
                 // Create a unique filename
                 const timestamp = Date.now();
-                const filename = `products/${timestamp}-${file.name}`;
+                const safeName = file.name.replace(/[^a-zA-Z0-9.-]/g, '_');
+                const filename = `products/${timestamp}-${safeName}`;
                 
                 // Upload to Firebase Storage
                 const storageRef = window.storageRef(window.storage, filename);
@@ -2260,12 +2326,49 @@
                 
             } catch (error) {
                 console.error('Error uploading image:', error);
-                statusElement.textContent = 'Erro no upload. Tente novamente.';
+                
+                let errorMessage = 'Erro no upload. ';
+                
+                // Handle specific errors
+                if (error.message.includes('CORS')) {
+                    errorMessage += 'Problema de CORS. Use uma URL de imagem externa ou configure o Firebase corretamente.';
+                } else if (error.message.includes('HTTPS')) {
+                    errorMessage += error.message;
+                } else if (error.code === 'storage/unauthorized') {
+                    errorMessage += 'Não autorizado. Verifique as regras do Firebase Storage.';
+                } else if (error.code === 'storage/canceled') {
+                    errorMessage += 'Upload cancelado.';
+                } else if (error.code === 'storage/unknown') {
+                    errorMessage += 'Erro desconhecido. Tente usar uma URL de imagem externa.';
+                } else {
+                    errorMessage += 'Tente usar uma URL de imagem externa.';
+                }
+                
+                statusElement.textContent = errorMessage;
                 statusElement.className = 'upload-status error';
                 progressBar.style.width = '0%';
                 input.value = '';
                 resetImagePreview(previewId);
-                showMessage('Erro ao fazer upload da imagem: ' + error.message, 'error');
+                
+                // Show alternative suggestion with action button
+                showMessage(`❌ ${errorMessage}`, 'error');
+                
+                // Show helpful toast after CORS error
+                if (error.message.includes('CORS') || !isSecureContext()) {
+                    setTimeout(() => {
+                        if (confirm('🔗 Problema de upload detectado!\n\n✅ Quer abrir o Gerador de Fotos para encontrar uma imagem?\n\nClique OK para abrir em nova aba.')) {
+                            window.open('https://senhormorais.github.io/gerador/', '_blank');
+                        }
+                    }, 2000);
+                }
+                
+                // Auto-switch to URL tab after error
+                setTimeout(() => {
+                    const urlTab = document.querySelector('.image-option-tabs .tab-button:first-child');
+                    if (urlTab) {
+                        urlTab.click();
+                    }
+                }, 3000);
             }
         }
 
@@ -2486,6 +2589,9 @@ Aguardo seu retorno! 😊`;
             // Update password status when admin page loads
             updatePasswordStatus();
             
+            // Update CORS warning based on protocol
+            updateCORSWarning();
+            
             container.innerHTML = '';
             
             if (!window.products || window.products.length === 0) {
@@ -2526,16 +2632,31 @@ Aguardo seu retorno! 😊`;
                                 <div class="image-input-group">
                                     <div class="image-option-tabs">
                                         <button type="button" class="tab-button active" onclick="switchImageTab('url', 'edit')">
-                                            <i class="fas fa-link"></i> URL
+                                            <i class="fas fa-link"></i> URL (Recomendado)
                                         </button>
                                         <button type="button" class="tab-button" onclick="switchImageTab('upload', 'edit')">
                                             <i class="fas fa-upload"></i> Upload
                                         </button>
                                     </div>
+                                    
+                                    <!-- Upload Warning -->
+                                    <div class="upload-warning" style="background: linear-gradient(135deg, #fef3c7, #fde68a); border: 1px solid #f59e0b; border-radius: 8px; padding: 12px; margin-bottom: 12px; font-size: 13px; color: #92400e;">
+                                        <i class="fas fa-exclamation-triangle" style="margin-right: 6px;"></i>
+                                        <strong>Problema de Upload:</strong> Use o <strong>Gerador de Fotos</strong> ou URLs externas.
+                                    </div>
+                                    
                                     <div id="editUrlInput" class="image-input-content">
-                                        <input type="url" id="edit-image-${product.id}" value="${escapeHtml(product.image)}" class="form-input" placeholder="URL da imagem" oninput="previewImage(this, 'editImagePreview-${product.id}')">
+                                        <input type="url" id="edit-image-${product.id}" value="${escapeHtml(product.image)}" class="form-input" placeholder="Cole aqui a URL da imagem" oninput="previewImage(this, 'editImagePreview-${product.id}')">
+                                        <div style="margin-top: 8px; font-size: 12px; color: #6b7280;">
+                                            💡 Dica: Use o botão <strong>"Gerador de Fotos"</strong> no topo
+                                        </div>
                                     </div>
                                     <div id="editUploadInput" class="image-input-content hidden">
+                                        <div style="background: #fef2f2; border: 1px solid #fecaca; border-radius: 8px; padding: 12px; margin-bottom: 12px; font-size: 13px; color: #dc2626;">
+                                            <i class="fas fa-info-circle" style="margin-right: 6px;"></i>
+                                            <strong>Limitações do Upload:</strong> Funciona apenas em HTTPS.
+                                        </div>
+                                        
                                         <div class="file-input-wrapper">
                                             <input 
                                                 type="file" 
@@ -2835,6 +2956,23 @@ Aguardo seu retorno! 😊`;
                     console.error('Error deleting product:', error);
                     showMessage('❌ Erro ao excluir produto: ' + error.message, 'error');
                 });
+        }
+
+        // Check if running on HTTPS
+        function isSecureContext() {
+            return window.location.protocol === 'https:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+        }
+
+        // Update CORS warning based on protocol
+        function updateCORSWarning() {
+            const corsWarning = document.querySelector('.cors-warning');
+            if (!corsWarning) return;
+            
+            if (isSecureContext()) {
+                corsWarning.style.display = 'none';
+            } else {
+                corsWarning.style.display = 'block';
+            }
         }
 
         // Password management functions
