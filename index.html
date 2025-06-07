@@ -816,7 +816,7 @@
     <script type="module">
         // Import Firebase
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-        import { getDatabase, ref, set, push, remove, onValue, off } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
+        import { getFirestore, collection, addDoc, doc, updateDoc, deleteDoc, getDocs, onSnapshot } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 
         // Firebase configuration
         const firebaseConfig = {
@@ -831,23 +831,24 @@
 
         // Initialize Firebase
         const app = initializeApp(firebaseConfig);
-        const database = getDatabase(app);
+        const db = getFirestore(app);
 
         // Global variables
         window.currentPage = 'home';
         window.isAuthenticated = false;
         window.editingProductId = null;
         window.products = [];
-        window.database = database;
+        window.db = db;
         const ADMIN_PASSWORD = 'mariana2025';
 
         // Make Firebase functions available globally
-        window.firebaseRef = ref;
-        window.firebaseSet = set;
-        window.firebasePush = push;
-        window.firebaseRemove = remove;
-        window.firebaseOnValue = onValue;
-        window.firebaseOff = off;
+        window.firestoreCollection = collection;
+        window.firestoreAddDoc = addDoc;
+        window.firestoreDoc = doc;
+        window.firestoreUpdateDoc = updateDoc;
+        window.firestoreDeleteDoc = deleteDoc;
+        window.firestoreGetDocs = getDocs;
+        window.firestoreOnSnapshot = onSnapshot;
 
         // Default products to initialize if database is empty
         const defaultProducts = [
@@ -877,47 +878,51 @@
             }
         ];
 
-        // Initialize products in Firebase if empty
-        function initializeFirebaseProducts() {
-            const productsRef = ref(database, 'products');
-            onValue(productsRef, (snapshot) => {
-                const data = snapshot.val();
-                if (!data) {
+        // Initialize products in Firestore if empty
+        async function initializeFirestoreProducts() {
+            try {
+                const productsCol = collection(db, 'products');
+                const snapshot = await getDocs(productsCol);
+                
+                if (snapshot.empty) {
                     // Database is empty, initialize with default products
-                    defaultProducts.forEach(product => {
-                        const newProductRef = push(productsRef);
-                        set(newProductRef, product);
-                    });
+                    for (const product of defaultProducts) {
+                        await addDoc(productsCol, product);
+                    }
+                    console.log('Default products added to Firestore');
                 }
-            }, { onlyOnce: true });
+            } catch (error) {
+                console.error('Error initializing products:', error);
+            }
         }
 
-        // Load products from Firebase
+        // Load products from Firestore
         function loadProducts() {
-            const productsRef = ref(database, 'products');
-            onValue(productsRef, (snapshot) => {
-                const data = snapshot.val();
+            const productsCol = collection(db, 'products');
+            
+            // Listen for real-time updates
+            onSnapshot(productsCol, (snapshot) => {
                 window.products = [];
                 
-                if (data) {
-                    Object.keys(data).forEach(key => {
-                        window.products.push({
-                            id: key,
-                            ...data[key]
-                        });
+                snapshot.forEach((doc) => {
+                    window.products.push({
+                        id: doc.id,
+                        ...doc.data()
                     });
-                }
+                });
                 
                 renderProducts();
                 if (window.isAuthenticated) {
                     renderAdminProducts();
                 }
+            }, (error) => {
+                console.error('Error loading products:', error);
             });
         }
 
         // Initialize the app
-        document.addEventListener('DOMContentLoaded', function() {
-            initializeFirebaseProducts();
+        document.addEventListener('DOMContentLoaded', async function() {
+            await initializeFirestoreProducts();
             loadProducts();
             showPage('home');
         });
@@ -1128,10 +1133,10 @@
                 description: description
             };
             
-            const productsRef = window.firebaseRef(window.database, 'products');
-            const newProductRef = window.firebasePush(productsRef);
+            // Use Firestore
+            const productsCol = window.firestoreCollection(window.db, 'products');
             
-            window.firebaseSet(newProductRef, newProduct)
+            window.firestoreAddDoc(productsCol, newProduct)
                 .then(() => {
                     showMessage('Produto adicionado com sucesso!');
                     
@@ -1142,6 +1147,7 @@
                     document.getElementById('newProductDescription').value = '';
                 })
                 .catch((error) => {
+                    console.error('Error adding product:', error);
                     showMessage('Erro ao adicionar produto: ' + error.message, 'error');
                 })
                 .finally(() => {
@@ -1170,7 +1176,6 @@
             saveBtn.disabled = true;
             saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Salvando...';
             
-            const productRef = window.firebaseRef(window.database, `products/${id}`);
             const updatedProduct = {
                 name: name,
                 price: price,
@@ -1178,12 +1183,16 @@
                 description: description
             };
             
-            window.firebaseSet(productRef, updatedProduct)
+            // Use Firestore
+            const productRef = window.firestoreDoc(window.db, 'products', id);
+            
+            window.firestoreUpdateDoc(productRef, updatedProduct)
                 .then(() => {
                     showMessage('Produto atualizado com sucesso!');
                     window.editingProductId = null;
                 })
                 .catch((error) => {
+                    console.error('Error updating product:', error);
                     showMessage('Erro ao atualizar produto: ' + error.message, 'error');
                     saveBtn.disabled = false;
                     saveBtn.innerHTML = '<i class="fas fa-save"></i> Salvar';
@@ -1200,13 +1209,15 @@
                 return;
             }
             
-            const productRef = window.firebaseRef(window.database, `products/${id}`);
+            // Use Firestore
+            const productRef = window.firestoreDoc(window.db, 'products', id);
             
-            window.firebaseRemove(productRef)
+            window.firestoreDeleteDoc(productRef)
                 .then(() => {
                     showMessage('Produto excluído com sucesso!');
                 })
                 .catch((error) => {
+                    console.error('Error deleting product:', error);
                     showMessage('Erro ao excluir produto: ' + error.message, 'error');
                 });
         }
